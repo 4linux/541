@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mysql
+  name: mysql
+  namespace: 4labs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:5.7
+        name: mysql
+        env:
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-configmaps
+              key: MYSQL_DATABASE   
+        - name: MYSQL_USER
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-configmaps
+              key: MYSQL_USER   
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: MYSQL_PASSWORD   
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "0.2"
+          limits:
+            memory: "512Mi"
+            cpu: "0.4"
+        readinessProbe:
+          exec:
+            command:
+            - bash
+            - "-c"
+            - |
+              set -ex
+              mysql -h 127.0.0.1 -uroot -p$MYSQL_ROOT_PASSWORD -e "SELECT 1" &> /dev/null
+          initialDelaySeconds: 5
+          periodSeconds: 2
+          timeoutSeconds: 1
+        volumeMounts:
+        - name: claim-nfs-mysql
+          mountPath: /var/lib/mysql
+
+        - name: mysql-db-config
+          mountPath: /docker-entrypoint-initdb.d/
+
+        - name: dump-usuarios
+          mountPath: /dump/
+
+      volumes:
+        - name: claim-nfs-mysql
+          persistentVolumeClaim:
+            claimName: claim-nfs-mysql
+
+        - name: mysql-db-config
+          configMap:
+            name: mysql-db-config
+
+        - name: dump-usuarios
+          configMap:
+            name: dump-usuarios

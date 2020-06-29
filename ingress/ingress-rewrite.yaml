@@ -1,0 +1,20 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-rewrite
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: 4labs.example
+    http:
+      paths:
+      - path: /nginx
+        backend:
+          serviceName: nginx
+          servicePort: 80
+      - path: /httpd
+        backend:
+          serviceName: httpd
+          servicePort: 80
