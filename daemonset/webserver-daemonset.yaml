@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: webserver
+  labels:
+    name: webserver
+spec:
+  selector:
+    matchLabels:
+      name: webserver
+  template:
+    metadata:
+      labels:
+        name: webserver
+    spec:
+      containers:
+      - name: hpa-apache
+        image: k8s.gcr.io/hpa-example
