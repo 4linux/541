@@ -7,5 +7,5 @@ spec:
   containers:
   - name: pod2
     image: ubuntu
-    command: ["/bin/bash", "-ec", "while :;do echo '.'; sleep 5 ;done"]
-  restartPolicy: Never 
+#    command: ["/bin/bash", "-ec", "while :;do echo '.'; sleep 5 ;done"]
+#  restartPolicy: Never
