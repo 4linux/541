@@ -71,11 +71,3 @@ spec:
         - name: config-volume-php
           configMap:
             name: php-config
-      initContainers:
-      - name: init-mysql
-        image: busybox:1.28
-        command: ['sh', '-c', "until nslookup mysql; do echo waiting for mysql; sleep 2; done"]
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: 0.1
