@@ -46,6 +46,14 @@ spec:
               name: app-secrets
               key: DB_PASS
 
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "0.2"
+          limits:
+            memory: "256Mi"
+            cpu: "0.4"
+
         volumeMounts:
         - name: claim-nfs-app
           mountPath: "/app"

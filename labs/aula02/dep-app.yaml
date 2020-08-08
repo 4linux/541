@@ -17,16 +17,33 @@ spec:
         app: app
     spec:
       containers:
-      - image: registry:5000/4linux-app:latest
+      - image: 4labs.example:5000/4linux-app:latest
         name: app
         env:
+
         - name: DB_HOST
-          value: mysql
+          valueFrom:
+            configMapKeyRef:
+              name: app-configmaps
+              key: DB_HOST
         - name: DB_PORT
-          value: "3306"
+          valueFrom:
+            configMapKeyRef:
+              name: app-configmaps
+              key: DB_PORT
         - name: DB_USER
-          value: php
-        - name: DB_PASS
-          value: 4linux
+          valueFrom:
+            configMapKeyRef:
+              name: app-configmaps
+              key: DB_USER
         - name: DB_NAME
-          value: php
+          valueFrom:
+            configMapKeyRef:
+              name: app-configmaps
+              key: DB_NAME
+
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: DB_PASS

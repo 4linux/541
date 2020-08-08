@@ -17,10 +17,9 @@ spec:
         app: app
     spec:
       containers:
-      - image: 4labs.example:5000/4linux-app:latest
+      - image: registry:5000/4linux-app:latest
         name: app
         env:
-
         - name: DB_HOST
           valueFrom:
             configMapKeyRef:
@@ -41,9 +40,22 @@ spec:
             configMapKeyRef:
               name: app-configmaps
               key: DB_NAME
-
         - name: DB_PASS
           valueFrom:
             secretKeyRef:
               name: app-secrets
               key: DB_PASS
+
+        volumeMounts:
+        - name: claim-nfs-app
+          mountPath: "/app"
+        - name: config-volume-php
+          mountPath: "/app/php-ini/"
+
+      volumes:
+        - name: claim-nfs-app
+          persistentVolumeClaim:
+            claimName: claim-nfs-app
+        - name: config-volume-php
+          configMap:
+            name: php-config

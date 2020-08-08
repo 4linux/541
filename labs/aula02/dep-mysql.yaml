@@ -20,11 +20,25 @@ spec:
       - image: mysql:5.6
         name: mysql
         env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: Abc123!  
+
         - name: MYSQL_DATABASE
-          value: php  
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-configmaps
+              key: MYSQL_DATABASE   
         - name: MYSQL_USER
-          value: php  
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-configmaps
+              key: MYSQL_USER   
+
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: MYSQL_ROOT_PASSWORD
         - name: MYSQL_PASSWORD
-          value: 4linux
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: MYSQL_PASSWORD   

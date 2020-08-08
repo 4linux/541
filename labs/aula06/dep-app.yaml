@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -45,7 +46,6 @@ spec:
             secretKeyRef:
               name: app-secrets
               key: DB_PASS
-
         resources:
           requests:
             memory: "64Mi"
@@ -53,13 +53,17 @@ spec:
           limits:
             memory: "256Mi"
             cpu: "0.4"
-
+        livenessProbe:
+          httpGet:
+            path: /login.php
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
         volumeMounts:
         - name: claim-nfs-app
           mountPath: "/app"
         - name: config-volume-php
           mountPath: "/app/php-ini/"
-
       volumes:
         - name: claim-nfs-app
           persistentVolumeClaim:
