@@ -1,0 +1,39 @@
+---
+- hosts: all
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+    - name: Garantindo /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ item }}"
+      with_items:
+        - 172.16.1.100 kube-single-master
+        - 172.16.1.101 kube-single-node1
+        - 172.16.1.102 kube-single-node2
+
+    - name: Instalando pacotes de dependencias para o curso de Kubernetes
+      yum:
+        name: ['unzip', 'wget', 'elinks', 'rsync']
+
+    - name: Adicionar usuario suporte
+      user:
+        name: suporte
+        shell: /bin/bash
+        password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
+
+    - name: Criando o arquivo 98_4linux
+      copy:
+        src: files/98_4linux
+        dest: /etc/sudoers.d
+        mode: 0644
+
+    - name: Definir permissao de acesso da HOME do usuario suporte
+      file:
+        path: /home/suporte
+        owner: suporte 
+        group: suporte 
+        state: directory
+        recurse: yes
+        mode: 0755
