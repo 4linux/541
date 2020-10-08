@@ -26,7 +26,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
       srv.vm.provider 'virtualbox' do |vb|
         vb.name   = env['name']
-        vb.gui    = true
         vb.memory = env['memory']
         vb.cpus   = env['cpus']
       end
