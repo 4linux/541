@@ -1,6 +1,6 @@
 ---
 - name: kube-balancer
-  box: 4linux/ubuntu16.04
+  box: ubuntu/bionic64
   hostname: kube-balancer
   ipaddress: 172.16.1.150
   memory: 512
@@ -8,7 +8,7 @@
   provision: provision/ansible/kube-balancer.yaml
 
 - name: kube-multi-master1
-  box: 4linux/ubuntu16.04
+  box: ubuntu/bionic64
   hostname: kube-multi-master1
   ipaddress: 172.16.1.151
   memory: 2220
@@ -16,7 +16,7 @@
   provision: provision/ansible/kube-multi-master1.yaml
 
 - name: kube-multi-master2
-  box: 4linux/ubuntu16.04
+  box: ubuntu/bionic64
   hostname: kube-multi-master2
   ipaddress: 172.16.1.152
   memory: 2220
@@ -24,7 +24,7 @@
   provision: provision/ansible/kube-multi-master2.yaml
 
 - name: kube-multi-master3
-  box: 4linux/ubuntu16.04
+  box: ubuntu/bionic64
   hostname: kube-multi-master3
   ipaddress: 172.16.1.153
   memory: 2220
