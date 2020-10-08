@@ -1,1 +1,0 @@
-kubeadm join 172.16.1.100:6443 --token ljzyyn.bga9c71e35x4eun9     --discovery-token-ca-cert-hash sha256:99254379c2d3e1ff02a1eb28dc9ad2ecb7f52abc7c778683876d83f9a91a3d4f 
