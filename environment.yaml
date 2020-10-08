@@ -1,6 +1,6 @@
 ---
 - name: kube-master
-  box: 4linux/ubuntu16.04
+  box: ubuntu/bionic64
   hostname: kube-master
   ipaddress: 172.16.1.100
   memory: 3584
@@ -8,7 +8,7 @@
   provision: provision/ansible/kube-master.yaml
 
 - name: kube-node1
-  box: 4linux/ubuntu16.04
+  box: ubuntu/bionic64
   hostname: kube-node1
   ipaddress: 172.16.1.101
   memory: 1536
@@ -16,7 +16,7 @@
   provision: provision/ansible/kube-node1.yaml
 
 - name: kube-node2
-  box: 4linux/ubuntu16.04
+  box: ubuntu/bionic64
   hostname: kube-node2
   ipaddress: 172.16.1.102
   memory: 1536
@@ -24,7 +24,7 @@
   provision: provision/ansible/kube-node2.yaml
 
 - name: kube-registry
-  box: 4linux/ubuntu16.04
+  box: ubuntu/bionic64
   hostname: registry
   ipaddress: 172.16.1.103
   memory: 512
