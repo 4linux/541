@@ -125,9 +125,9 @@
         update_cache: yes
       vars:
         packages:
-        - kubelet=1.16.1-00
-        - kubeadm=1.16.1-00
-        - kubectl=1.16.1-00
+        - kubelet=1.18.1-00
+        - kubeadm=1.18.1-00
+        - kubectl=1.18.1-00
 
     - name: Reinicia o kubelet
       service:
@@ -136,8 +136,10 @@
         state: restarted
 
     - name: Inicializa o cluster Kubernetes atraves da ferramenta kubeadm
-      command: kubeadm init --apiserver-advertise-address="172.16.1.100" --apiserver-cert-extra-sans="172.16.1.100" --node-name kube-master --pod-network-cidr=192.168.0.0/16 --kubernetes-version=1.16.1 --ignore-preflight-errors=all
-
+      shell: kubeadm init --apiserver-advertise-address="172.16.1.100" --apiserver-cert-extra-sans="172.16.1.100" --node-name kube-master --pod-network-cidr=192.168.0.0/16 --kubernetes-version=1.18.1 --ignore-preflight-errors=all > /opt/init_cluster
+      args:
+        creates: /opt/init_cluster
+        
     - name: Cria o diretório .kube para o usuário vagrant
       file:
         path: /home/vagrant/.kube
@@ -145,7 +147,10 @@
         mode: '0755'
 
     - name: Configura o kubeconfig para o usuario vagrant
-      command: cp -i /etc/kubernetes/admin.conf /home/vagrant/.kube/config
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/vagrant/.kube/config
+        remote_src: yes
 
     - name: Definir permissao de acesso ao arquivo config
       file:
@@ -163,7 +168,10 @@
         mode: '0755'
 
     - name: Configura o kubeconfig para o usuario suporte
-      command: cp -i /etc/kubernetes/admin.conf /home/suporte/.kube/config
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/suporte/.kube/config
+        remote_src: yes
 
     - name: Definir permissao de acesso ao arquivo config
       file:
