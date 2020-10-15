@@ -20,6 +20,14 @@
         shell: /bin/bash
         password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
         
+    - name: Cria o diretório .ssh
+      file:
+        path: /home/suporte/.ssh
+        state: directory
+        owner: suporte
+        group: suporte
+        mode: '0755'
+        
     - name: Cria o diretório data
       file:
         path: /home/suporte/data
@@ -32,6 +40,12 @@
       copy:
         src: files/98_4linux
         dest: /etc/sudoers.d
+        mode: 0644
+        
+    - name: Criando o arquivo authorized_keys
+      copy:
+        src: files/authorized_keys
+        dest: /home/suporte/.ssh/authorized_keys
         mode: 0644
    
     - name: Instala pacotes que permitem que o apt seja usado sobre HTTPS
