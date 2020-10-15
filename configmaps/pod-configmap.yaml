@@ -4,8 +4,8 @@ metadata:
   name: pod-configmap
 spec:
   containers:
-  - name: debian
-    image: debian:9
+  - name: busybox
+    image: busybox:1.28
     command:
       - sleep
       - "3600"
