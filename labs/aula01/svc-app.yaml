@@ -7,9 +7,10 @@ metadata:
   namespace: 4labs
 spec:
   ports:
-  - port: 8080
+  - nodePort: 31541
+    port: 8080
     protocol: TCP
     targetPort: 8080
   selector:
     app: app
-  type: LoadBalancer
+  type: NodePort
