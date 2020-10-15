@@ -20,11 +20,31 @@
         shell: /bin/bash
         password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
 
+    - name: Cria o diretório .ssh
+      file:
+        path: /home/suporte/.ssh
+        state: directory
+        owner: suporte
+        group: suporte
+        mode: '0755'
+        
+    - name: Criando o arquivo id_rsa
+      copy:
+        src: files/id_rsa
+        dest: /home/suporte/.ssh/id_rsa
+        mode: 0600
+        
+    - name: Criando o arquivo id_rsa.pub
+      copy:
+        src: files/id_rsa.pub
+        dest: /home/suporte/.ssh/id_rsa.pub
+        mode: 0644
+        
     - name: Criando o arquivo 98_4linux
       copy:
         src: files/98_4linux
         dest: /etc/sudoers.d
-        mode: '0644'
+        mode: 0644
 
     - name: Criando o arquivo etcd-v3.3.13-linux-amd64.tar
       copy:
