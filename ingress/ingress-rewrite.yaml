@@ -14,7 +14,7 @@ spec:
         backend:
           serviceName: nginx
           servicePort: 80
-      - path: /httpd
+      - path: /apache
         backend:
           serviceName: httpd
           servicePort: 80
