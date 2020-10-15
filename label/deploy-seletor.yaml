@@ -24,14 +24,14 @@ spec:
       affinity:
         nodeAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 80
+          - weight: 20
             preference:
               matchExpressions:
               - key: cloud
                 operator: In
                 values: 
                 - AWS
-          - weight: 20
+          - weight: 80
             preference:
               matchExpressions:
               - key: cloud
