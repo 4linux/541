@@ -19,6 +19,14 @@
         name: suporte
         shell: /bin/bash
         password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
+        
+    - name: Cria o diretório data
+      file:
+        path: /home/suporte/data
+        state: directory
+        owner: suporte
+        group: suporte
+        mode: '0755'
 
     - name: Criando o arquivo 98_4linux
       copy:
