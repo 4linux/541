@@ -13,8 +13,8 @@ spec:
         backend:
           serviceName: httpd
           servicePort: 80
-    host: httpd.4labs.example
+    host: apache.4labs.example
   tls:
   - hosts:
-    - httpd.4labs.example
+    - apache.4labs.example
     secretName: certificado-httpd-tls
