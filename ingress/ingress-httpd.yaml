@@ -11,4 +11,4 @@ spec:
         backend:
           serviceName: httpd
           servicePort: 80
-    host: httpd.4labs.example
+    host: apache.4labs.example
