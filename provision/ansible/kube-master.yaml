@@ -32,12 +32,16 @@
       copy:
         src: files/id_rsa
         dest: /home/suporte/.ssh/id_rsa
+        owner: suporte
+        group: suporte
         mode: 0600
         
     - name: Criando o arquivo id_rsa.pub
       copy:
         src: files/id_rsa.pub
         dest: /home/suporte/.ssh/id_rsa.pub
+        owner: suporte
+        group: suporte
         mode: 0644
         
     - name: Criando o arquivo 98_4linux
