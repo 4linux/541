@@ -117,6 +117,28 @@
         owner: suporte
         group: suporte
         mode: '0644'
+        
+    - name: Criando o arquivo daemon.json
+      copy:
+        src: files/daemon.json
+        dest: /etc/docker/
+        owner: root
+        group: root
+        mode: '0644'
+   
+    - name: Cria o diretorio docker.service.d
+      file:
+        path: /etc/systemd/system/docker.service.d
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+        
+    - name: Reinicia o Docker
+      service:
+        name: docker
+        daemon_reload: yes
+        state: restarted
 
     - name: Remove swap do arquivo /etc/fstab
       mount:
@@ -221,5 +243,5 @@
 
     - name: Clona repositório com os arquivos do curso
       git:
-        repo: https://github.com/4linux/4541.git
+        repo: 'https://github.com/4linux/4541.git'
         dest: /home/suporte/4541
