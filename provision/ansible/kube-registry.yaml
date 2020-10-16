@@ -247,7 +247,7 @@
         group: root
         mode: '0755'
         
-   - name: Reinicia o Docker
+    - name: Reinicia o Docker
       service:
         name: docker
         daemon_reload: yes
