@@ -46,6 +46,8 @@
       copy:
         src: files/authorized_keys
         dest: /home/suporte/.ssh/authorized_keys
+        owner: suporte
+        group: suporte
         mode: 0644
    
     - name: Instala pacotes que permitem que o apt seja usado sobre HTTPS
