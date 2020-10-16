@@ -88,6 +88,20 @@
         group: root 
         state: directory
         recurse: yes
+        
+    - name: Cria o diretório .ssh
+      file:
+        path: /home/devops/.ssh
+        state: directory
+        owner: devops
+        group: devops
+        mode: '0755'
+        
+    - name: Criando o arquivo authorized_keys
+      copy:
+        src: files/authorized_keys
+        dest: /home/devops/.ssh/authorized_keys
+        mode: 0644
 
     - name: Criando diretório /opt/data
       file:
