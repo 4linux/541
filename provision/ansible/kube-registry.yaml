@@ -223,3 +223,8 @@
 
     - name: Inicia o Docker Registry atraves do Docker Compose
       command: docker-compose -f /home/suporte/docker-compose.yaml up -d
+      
+    - name: Clona repositório com os arquivos do curso
+      git:
+        repo: https://github.com/4linux/4541.git
+        dest: /home/suporte/4541
