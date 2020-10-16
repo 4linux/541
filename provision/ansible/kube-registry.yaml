@@ -101,6 +101,8 @@
       copy:
         src: files/authorized_keys
         dest: /home/devops/.ssh/authorized_keys
+        owner: devops
+        group: devops
         mode: 0644
 
     - name: Criando diretório /opt/data
@@ -245,5 +247,5 @@
         
     - name: Clona repositório com os arquivos do curso para a HOME do usuario devops
       git:
-        repo: https://github.com/4linux/4541.git
+        repo: 'https://github.com/4linux/4541.git'
         dest: /home/devops/4541
