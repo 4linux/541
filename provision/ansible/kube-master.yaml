@@ -241,7 +241,7 @@
     - name: docker status
       service: name=docker state=started
 
-    - name: Clona repositório com os arquivos do curso
+    - name: Clona repositório com os arquivos do curso para a HOME do usuario suporte
       git:
         repo: 'https://github.com/4linux/4541.git'
         dest: /home/suporte/4541
