@@ -25,6 +25,11 @@
         src: files/98_4linux
         dest: /etc/sudoers.d
         mode: 0644
+        
+    - name: Clona repositório com os arquivos do curso para a HOME do usuario suporte
+      git:
+        repo: 'https://github.com/4linux/4541.git'
+        dest: /home/suporte/4541
 
     - name: Definir permissao de acesso da HOME do usuario suporte
       file:
@@ -105,9 +110,9 @@
         update_cache: yes
       vars:
         packages:
-        - kubelet=1.16.1-00
-        - kubeadm=1.16.1-00
-        - kubectl=1.16.1-00
+        - kubelet=1.19.3-00
+        - kubeadm=1.19.3-00
+        - kubectl=1.19.3-00
 
     - name: Reinicia o kubelet
       service:
