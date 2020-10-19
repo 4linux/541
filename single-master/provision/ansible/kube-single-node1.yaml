@@ -44,3 +44,13 @@
         owner: root
         group: root
         mode: 0644
+        
+    - name: Clona repositório com os arquivos do curso para a HOME do usuario suporte
+      git:
+        repo: 'https://github.com/4linux/4541.git'
+        dest: /home/suporte/4541
+        
+    - name: Clona repositório com os arquivos do curso para a HOME do usuario root
+      git:
+        repo: 'https://github.com/4linux/4541.git'
+        dest: /root/4541
