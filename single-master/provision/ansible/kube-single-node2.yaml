@@ -15,7 +15,7 @@
 
     - name: Instalando pacotes de dependencias para o curso de Kubernetes
       yum:
-        name: ['unzip', 'wget', 'elinks', 'rsync']
+        name: ['unzip', 'wget', 'elinks', 'rsync', 'git', 'vim']
 
     - name: Adicionar usuario suporte
       user:
@@ -29,11 +29,18 @@
         dest: /etc/sudoers.d
         mode: 0644
 
-    - name: Definir permissao de acesso da HOME do usuario suporte
+    - name: Cria o diretório .ssh
       file:
-        path: /home/suporte
-        owner: suporte 
-        group: suporte 
+        path: /root/.ssh
         state: directory
-        recurse: yes
-        mode: 0755
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Criando o arquivo authorized_keys
+      copy:
+        src: files/authorized_keys
+        dest: /root/.ssh/authorized_keys
+        owner: root
+        group: root
+        mode: 0644
