@@ -19,12 +19,22 @@
         name: suporte
         shell: /bin/bash
         password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
-
+        
+    - name: Clona repositório com os arquivos do curso para a HOME do usuario suporte
+      git:
+        repo: 'https://github.com/4linux/4541.git'
+        dest: /home/suporte/4541
+        
     - name: Adiciona usuario devops
       user:
         name: devops
         shell: /bin/bash
         password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
+        
+    - name: Clona repositório com os arquivos do curso para a HOME do usuario devops
+      git:
+        repo: 'https://github.com/4linux/4541.git'
+        dest: /home/devops/4541
 
     - name: Criando o arquivo 98_4linux
       copy:
@@ -261,13 +271,3 @@
 
     - name: Inicia o Docker Registry atraves do Docker Compose
       command: docker-compose -f /home/suporte/docker-compose.yaml up -d
-      
-    - name: Clona repositório com os arquivos do curso para a HOME do usuario suporte
-      git:
-        repo: 'https://github.com/4linux/4541.git'
-        dest: /home/suporte/4541
-        
-    - name: Clona repositório com os arquivos do curso para a HOME do usuario devops
-      git:
-        repo: 'https://github.com/4linux/4541.git'
-        dest: /home/devops/4541
