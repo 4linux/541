@@ -20,6 +20,11 @@
         shell: /bin/bash
         password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
         
+    - name: Clona repositório com os arquivos do curso para a HOME do usuario suporte
+      git:
+        repo: 'https://github.com/4linux/4541.git'
+        dest: /home/suporte/4541
+        
     - name: Cria o diretório .ssh
       file:
         path: /home/suporte/.ssh
@@ -180,8 +185,3 @@
   handlers:
     - name: docker status
       service: name=docker state=started
-
-    - name: Clona repositório com os arquivos do curso para a HOME do usuario suporte
-      git:
-        repo: 'https://github.com/4linux/4541.git'
-        dest: /home/suporte/4541
