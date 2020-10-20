@@ -23,24 +23,14 @@
         name: suporte
         shell: /bin/bash
         password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
-
-    - name: Criando o arquivo 98_4linux
-      copy:
-        src: files/98_4linux
-        dest: /etc/sudoers.d
-        mode: 0644
-     
+        
     - name: Clona repositório com os arquivos do curso para a HOME do usuario suporte
       git:
         repo: 'https://github.com/4linux/4541.git'
         dest: /home/suporte/4541
         
-    - name: Definir permissao de acesso da HOME do usuario suporte
-      file:
-        path: /home/suporte
-        owner: suporte 
-        group: suporte 
-        state: directory
-        recurse: yes
-        mode: 0755   
-
+    - name: Criando o arquivo 98_4linux
+      copy:
+        src: files/98_4linux
+        dest: /etc/sudoers.d
+        mode: 0644
