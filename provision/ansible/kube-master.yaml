@@ -35,6 +35,7 @@
         - mysql-client
         - nfs-common
         - snapd
+        - git
         
     - name: Clona repositório com os arquivos do curso para a HOME do usuario suporte
       git:
