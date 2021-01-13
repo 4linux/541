@@ -3,22 +3,22 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: httpd
-  name: httpd
+    app: apache
+  name: apache
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: httpd
+      app: apache
   strategy: {}
   template:
     metadata:
       labels:
-        app: httpd
+        app: apache
     spec:
       containers:
       - image: httpd
-        name: httpd
+        name: apache
       affinity:
         nodeAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
