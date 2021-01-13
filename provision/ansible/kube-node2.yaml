@@ -34,6 +34,7 @@
         - software-properties-common
         - nfs-common
         - git
+        - vim
         
     - name: Clona repositório com os arquivos do curso para a HOME do usuario suporte
       git:
