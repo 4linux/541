@@ -48,7 +48,7 @@
         owner: suporte
         group: suporte
         mode: '0755'
-
+        
     - name: Criando o arquivo 98_4linux
       copy:
         src: files/98_4linux

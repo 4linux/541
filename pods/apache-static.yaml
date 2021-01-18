@@ -9,6 +9,7 @@ spec:
   containers:
     - name: httpd
       image: httpd
+      imagePullPolicy: IfNotPresent
       ports:
         - name: web
           containerPort: 80

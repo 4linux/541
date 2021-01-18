@@ -18,6 +18,7 @@ spec:
       containers:
       - name: httpd
         image: httpd:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
           name: web

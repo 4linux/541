@@ -26,20 +26,6 @@
         dest: /etc/sudoers.d
         mode: 0644
 
-    - name: Clona repositório com os arquivos do curso para a HOME do usuario suporte
-      git:
-        repo: 'https://github.com/4linux/4541.git'
-        dest: /home/suporte/4541
-        
-    - name: Definir permissao de acesso da HOME do usuario suporte
-      file:
-        path: /home/suporte
-        owner: suporte
-        group: suporte
-        state: directory
-        recurse: yes
-        mode: 0755
-     
     - name: Instala pacotes que permitem que o apt seja usado sobre HTTPS
       apt:
         name: "{{ packages }}"
@@ -52,6 +38,22 @@
         - curl
         - gnupg-agent
         - software-properties-common
+        - git
+        - vim
+
+    - name: Clona repositorio com os arquivos do curso para a HOME do usuario suporte
+      git:
+        repo: 'https://github.com/4linux/4541.git'
+        dest: /home/suporte/4541
+        
+    - name: Definir permissao de acesso da HOME do usuario suporte
+      file:
+        path: /home/suporte
+        owner: suporte
+        group: suporte
+        state: directory
+        recurse: yes
+        mode: 0755
 
     - name: Adiciona uma chave de assinatura apt para o Docker
       apt_key:

@@ -1,20 +1,23 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  name: ingress-app
   annotations:
     kubernetes.io/ingress.class: nginx
-  name: ingress-app
 spec:
-  rules:
-  - http:
-      paths:
-      - path: /
-        backend:
-          serviceName: app
-          servicePort: 8080
-    host: app.4labs.example
   tls:
   - hosts:
-    - app.4labs.example
+      - app.4labs.example
     secretName: certificado-app-tls
+  rules:
+  - host: app.4labs.example
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app
+            port:
+              number: 8080

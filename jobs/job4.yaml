@@ -12,6 +12,7 @@ spec:
           containers:
           - name: job4
             image: busybox
+            imagePullPolicy: IfNotPresent
             args:
             - /bin/sh
             - -c

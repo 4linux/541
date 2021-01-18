@@ -76,9 +76,9 @@
     - name: Criando o arquivo etcd-v3.3.13-linux-amd64.tar
       copy:
         src: files/etcd-v3.3.13-linux-amd64.tar
-        dest: /home/vagrant
-        owner: vagrant
-        group: vagrant
+        dest: /home/suporte
+        owner: suporte
+        group: suporte
         mode: '0644'   
 
     - name: Adiciona uma chave de assinatura apt para o Docker

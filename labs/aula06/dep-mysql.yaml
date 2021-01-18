@@ -18,6 +18,7 @@ spec:
     spec:
       containers:
       - image: mysql:5.7
+        imagePullPolicy: IfNotPresent
         name: mysql
         env:
         - name: MYSQL_DATABASE

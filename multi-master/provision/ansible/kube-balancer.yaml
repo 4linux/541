@@ -16,7 +16,7 @@
 
     - name: Instalando pacotes de dependencias para o curso de Kubernetes
       apt:
-        name: ['unzip', 'wget', 'elinks', 'rsync', 'vim']
+        name: ['unzip', 'wget', 'elinks', 'rsync', 'vim', 'git', 'vim']
 
     - name: Adicionar usuario suporte
       user:
@@ -24,7 +24,7 @@
         shell: /bin/bash
         password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
         
-    - name: Clona repositório com os arquivos do curso para a HOME do usuario suporte
+    - name: Clona repositorio com os arquivos do curso para a HOME do usuario suporte
       git:
         repo: 'https://github.com/4linux/4541.git'
         dest: /home/suporte/4541

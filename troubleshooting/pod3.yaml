@@ -6,6 +6,7 @@ metadata:
 spec:
   containers:
   - image: busybox
+    imagePullPolicy: IfNotPresent
     name: pod3
     command:
     - dd

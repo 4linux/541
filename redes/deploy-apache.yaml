@@ -18,6 +18,7 @@ spec:
     spec:
       containers:
       - image: httpd
+        imagePullPolicy: IfNotPresent
         name: apache
       affinity:
         nodeAffinity:

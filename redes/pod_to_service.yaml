@@ -9,6 +9,7 @@ metadata:
 spec:
   containers:
   - image: nginx
+    imagePullPolicy: IfNotPresent
     name: nginx
     ports:
       - containerPort: 80
@@ -23,6 +24,7 @@ metadata:
 spec:
   containers:
   - image: nginx
+    imagePullPolicy: IfNotPresent
     name: nginx
     ports:
       - containerPort: 80

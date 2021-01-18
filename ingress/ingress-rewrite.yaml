@@ -1,5 +1,5 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-rewrite
@@ -11,10 +11,14 @@ spec:
     http:
       paths:
       - path: /nginx
+        pathType: Prefix
         backend:
-          serviceName: nginx
-          servicePort: 80
+          service
+            name: nginx
+            port: 80
       - path: /apache
+        pathType: Prefix
         backend:
-          serviceName: httpd
-          servicePort: 80
+          service
+            name: apache
+            port: 80

@@ -12,6 +12,7 @@ spec:
       containers:
       - name: job1
         image: ubuntu
+        imagePullPolicy: IfNotPresent
         env:
           - name: i
             value: "1"

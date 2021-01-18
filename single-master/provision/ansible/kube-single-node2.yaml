@@ -54,3 +54,15 @@
       git:
         repo: 'https://github.com/4linux/4541.git'
         dest: /root/4541
+
+    - name: Alterando arquivo do SELinux
+      lineinfile:
+          path: /etc/selinux/config
+          regexp: '^SELINUX='
+          line: 'SELINUX=disabled'
+
+    - name: Desabilitando o Firewall
+      command: systemctl disable firewalld
+
+    - name: Parando FirewallD
+      command: systemctl stop firewalld

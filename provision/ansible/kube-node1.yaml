@@ -84,6 +84,7 @@
         - gnupg-agent
         - software-properties-common
         - nfs-common
+        - vim
 
     - name: Adiciona uma chave de assinatura apt para o Docker
       apt_key:

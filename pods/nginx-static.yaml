@@ -9,6 +9,7 @@ spec:
   containers:
     - name: nginx
       image: nginx
+      imagePullPolicy: IfNotPresent
       ports:
         - name: web
           containerPort: 80

@@ -7,6 +7,7 @@ spec:
   containers:
   - name: pod-capabilities
     image: alpine
+    imagePullPolicy: IfNotPresent
     command: ["/bin/sleep", "999999"]
     securityContext:
       capabilities:
