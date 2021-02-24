@@ -8,7 +8,7 @@ rules:
 - apiGroups: [""]
   resources: ["services", "pods", "persistentvolumeclaims", "secrets"]
   verbs: ["get", "list", "create", "update", "patch", "delete"]
-- apiGroups: ["apps", "extensions"]
+- apiGroups: ["apps", "extensions", "networking.k8s.io"]
   resources: ["deployments", "deployments/scale", "ingresses"]
   verbs: ["get", "list", "create", "update", "patch", "delete"]
 ---

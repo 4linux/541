@@ -13,12 +13,14 @@ spec:
       - path: /nginx
         pathType: Prefix
         backend:
-          service
+          service:
             name: nginx
-            port: 80
+            port:
+              number: 80
       - path: /apache
         pathType: Prefix
         backend:
-          service
+          service:
             name: apache
-            port: 80
+            port:
+              number: 80
