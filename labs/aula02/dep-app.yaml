@@ -17,7 +17,7 @@ spec:
         app: app
     spec:
       containers:
-      - image: 4labs.example:5000/4linux-app:latest
+      - image: registry:5000/4linux-app:latest
         name: app
         env:
 
