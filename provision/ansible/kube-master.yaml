@@ -178,9 +178,9 @@
         update_cache: yes
       vars:
         packages:
-        - kubelet=1.19.1-00
-        - kubeadm=1.19.1-00
-        - kubectl=1.19.1-00
+        - kubelet=1.21.1-00
+        - kubeadm=1.21.1-00
+        - kubectl=1.21.1-00
 
     - name: Reinicia o kubelet
       service:
@@ -189,7 +189,7 @@
         state: restarted
 
     - name: Inicializa o cluster Kubernetes atraves da ferramenta kubeadm
-      shell: kubeadm init --apiserver-advertise-address="172.16.1.100" --apiserver-cert-extra-sans="172.16.1.100" --node-name kube-master --pod-network-cidr=192.168.0.0/16 --kubernetes-version=1.19.1 --ignore-preflight-errors=all > /opt/init_cluster
+      shell: kubeadm init --apiserver-advertise-address="172.16.1.100" --apiserver-cert-extra-sans="172.16.1.100" --node-name kube-master --pod-network-cidr=192.168.0.0/16 --kubernetes-version=1.21.1 --ignore-preflight-errors=all > /opt/init_cluster
       args:
         creates: /opt/init_cluster
         
