@@ -156,8 +156,8 @@
         path: /etc/exports
         line: "{{ item }}"
       with_items:
-        - /opt/data 172.16.1.0/24(rw,no_root_squash)
-        - /opt/app 172.16.1.0/24(rw,no_root_squash)
+        - /opt/data 172.16.1.0/24(rw,no_root_squash,no_subtree_check)
+        - /opt/app 172.16.1.0/24(rw,no_root_squash,no_subtree_check)
 
     - name: Reinicia o service do nfs-kernel-server
       systemd:
