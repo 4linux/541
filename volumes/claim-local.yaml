@@ -3,7 +3,6 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: volume-claim-local
-  namespace: default
 spec:
   accessModes:
   - ReadWriteOnce
