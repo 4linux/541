@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: v1
+  name: app-v1
+  namespace: 4labs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: v1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: v1
+    spec:
+      containers:
+      - image: registry:5000/4linux-app:v1
+        name: app-v1
+        env:
+        - name: DB_HOST
+          value: mysql
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_USER
+          value: php
+        - name: DB_PASS
+          value: 4linux
+        - name: DB_NAME
+          value: php
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: v2
+  name: app-v2
+  namespace: 4labs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: v2
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: v2
+    spec:
+      containers:
+      - image: registry:5000/4linux-app:v2
+        name: app-v2
+        env:
+        - name: DB_HOST
+          value: mysql
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_USER
+          value: php
+        - name: DB_PASS
+          value: 4linux
+        - name: DB_NAME
+          value: php

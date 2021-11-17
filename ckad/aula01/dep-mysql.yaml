@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mysql
+  name: mysql
+  namespace: 4labs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: Abc123!  
+        - name: MYSQL_DATABASE
+          value: php  
+        - name: MYSQL_USER
+          value: php  
+        - name: MYSQL_PASSWORD
+          value: 4linux
