@@ -1,0 +1,497 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: 4labs
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: frontend-secrets
+  namespace: 4labs
+data:
+  DB_PASS: NGxpbnV4
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-secrets
+  namespace: 4labs
+data:
+  MYSQL_PASSWORD: NGxpbnV4
+  MYSQL_ROOT_PASSWORD: QWJjMTIzIQ==
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-configmaps
+  namespace: 4labs
+data:
+  DB_HOST: backend
+  DB_NAME: php
+  DB_PORT: "3306"
+  DB_USER: php
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-configmaps
+  namespace: 4labs
+data:
+  MYSQL_DATABASE: php
+  MYSQL_USER: php
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: php-config
+  namespace: 4labs
+data:
+  php.ini: |
+    [PHP]
+    engine = On
+    short_open_tag = Off
+    precision = 14
+    output_buffering = 4096
+    zlib.output_compression = Off
+    implicit_flush = Off
+    unserialize_callback_func =
+    serialize_precision = -1
+    disable_functions =
+    disable_classes =
+    zend.enable_gc = On
+    expose_php = On
+    max_execution_time = 30
+    max_input_time = 60
+    memory_limit = 128M
+    error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
+    display_errors = Off
+    display_startup_errors = Off
+    log_errors = On
+    log_errors_max_len = 1024
+    ignore_repeated_errors = Off
+    ignore_repeated_source = Off
+    report_memleaks = On
+    html_errors = On
+    variables_order = "GPCS"
+    request_order = "GP"
+    register_argc_argv = Off
+    auto_globals_jit = On
+    post_max_size = 8M
+    auto_prepend_file =
+    auto_append_file =
+    default_mimetype = "text/html"
+    default_charset = "UTF-8"
+    include_path = ".:/usr/share/php7"
+    doc_root =
+    user_dir =
+    enable_dl = Off
+    file_uploads = On
+    upload_max_filesize = 2M
+    max_file_uploads = 20
+    allow_url_fopen = On
+    allow_url_include = Off
+    default_socket_timeout = 60
+
+    [CLI Server]
+    cli_server.color = On
+
+    [MySQLi]
+    mysqli.max_persistent = -1
+    mysqli.allow_persistent = On
+    mysqli.max_links = -1
+    mysqli.cache_size = 2000
+    mysqli.default_port = 3306
+    mysqli.default_socket =
+    mysqli.default_host =
+    mysqli.default_user =
+    mysqli.default_pw =
+    mysqli.reconnect = Off
+
+    [mysqlnd]
+    mysqlnd.collect_statistics = On
+    mysqlnd.collect_memory_statistics = Off
+
+    [bcmath]
+    bcmath.scale = 0
+
+    [Session]
+    session.save_handler = memcached
+    session.save_path = "memcached1:11211,memcached2:11211"
+    session.use_strict_mode = 0
+    session.use_cookies = 1
+    session.use_only_cookies = 1
+    session.name = PHPSESSID
+    session.auto_start = 0
+    session.cookie_lifetime = 0
+    session.cookie_path = /
+    session.cookie_domain =
+    session.cookie_httponly =
+    session.serialize_handler = php
+    session.gc_probability = 1
+    session.gc_divisor = 1000
+    session.gc_maxlifetime = 1440
+    session.referer_check =
+    session.cache_limiter = nocache
+    session.cache_expire = 180
+    session.use_trans_sid = 0
+    session.sid_length = 26
+    session.trans_sid_tags = "a=href,area=href,frame=src,form="
+    session.sid_bits_per_character = 5
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dump-usuarios
+  namespace: 4labs
+data:
+  dump.sql: |
+    USE php;
+
+    DROP TABLE IF EXISTS usuarios;
+
+    CREATE TABLE usuarios (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nome VARCHAR(50),
+            email VARCHAR(100),
+            senha CHAR(60),
+            cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+
+    INSERT INTO usuarios (nome, email, senha) VALUES ('Suporte DevOps', 'suporte@4labs.example', '$2y$10$qTdhcJ8CkKztrvRhBN7EG.UB/YqfwjXpV2iKrZjvTIp2HTzqcflvi');
+    INSERT INTO usuarios (nome, email, senha) VALUES ('Developer PHP', 'developer@4labs.example', '$2y$10$mKvUbxiLFx9V4WPcNT3dWehd9xJ5xyZi2wkmadK8UlJBnYrLpwAqi');
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-db-config
+  namespace: 4labs
+data:
+  create-php-db.sh: |2
+        echo "CREATE DATABASE IF NOT EXISTS php CHARACTER SET utf8 COLLATE utf8_bin;" | mysql --host=localhost --user=root --password=$MYSQL_ROOT_PASSWORD
+
+        echo "GRANT ALL PRIVILEGES ON php.* TO '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';" | mysql --host=localhost --user=root --password=$MYSQL_ROOT_PASSWORD
+
+        echo "GRANT ALL PRIVILEGES ON php.* TO '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';" | mysql --host=localhost --user=root --password=$MYSQL_ROOT_PASSWORD
+
+        mysql --host=localhost --user=$MYSQL_USER --password=$MYSQL_PASSWORD < /dump/dump.sql
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: local-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: volume-nfs-frontend
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  nfs:
+    server: 172.16.1.103
+    path: /opt/app
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: claim-nfs-frontend
+  namespace: 4labs
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10G
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: volume-nfs-backend
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  nfs:
+    server: 172.16.1.103
+    path: /opt/data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: claim-nfs-backend
+  namespace: 4labs
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10G
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: memcached1
+  name: memcached1
+  namespace: 4labs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memcached1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: memcached1
+    spec:
+      containers:
+      - image: memcached:latest
+        imagePullPolicy: IfNotPresent
+        name: memcached1
+        ports:
+        - containerPort: 11211
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: memcached2
+  name: memcached2
+  namespace: 4labs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memcached2
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: memcached2
+    spec:
+      containers:
+      - image: memcached:latest
+        imagePullPolicy: IfNotPresent
+        name: memcached2
+        ports:
+        - containerPort: 11211
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: frontend
+  name: frontend
+  namespace: 4labs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - image: registry:5000/4linux-app:latest
+        name: frontend
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-configmaps
+              key: DB_HOST
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-configmaps
+              key: DB_PORT
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-configmaps
+              key: DB_USER
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-configmaps
+              key: DB_NAME
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: frontend-secrets
+              key: DB_PASS
+
+        volumeMounts:
+        - name: claim-nfs-frontend
+          mountPath: "/app"
+        - name: config-volume-php
+          mountPath: "/app/php-ini/"
+
+      volumes:
+        - name: claim-nfs-frontend
+          persistentVolumeClaim:
+            claimName: claim-nfs-frontend
+        - name: config-volume-php
+          configMap:
+            name: php-config
+      nodeSelector:
+        kubernetes.io/hostname: kube-node1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: backend
+  name: backend
+  namespace: 4labs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        name: backend
+        env:
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: backend-configmaps
+              key: MYSQL_DATABASE   
+        - name: MYSQL_USER
+          valueFrom:
+            configMapKeyRef:
+              name: backend-configmaps
+              key: MYSQL_USER   
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: backend-secrets
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: backend-secrets
+              key: MYSQL_PASSWORD   
+
+        volumeMounts:
+        - name: claim-nfs-backend
+          mountPath: /var/lib/mysql
+
+        - name: backend-db-config
+          mountPath: /docker-entrypoint-initdb.d/
+
+        - name: dump-usuarios
+          mountPath: /dump/
+
+      volumes:
+        - name: claim-nfs-backend
+          persistentVolumeClaim:
+            claimName: claim-nfs-backend
+
+        - name: backend-db-config
+          configMap:
+            name: backend-db-config
+
+        - name: dump-usuarios
+          configMap:
+            name: dump-usuarios
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: memcached1
+  name: memcached1
+  namespace: 4labs
+spec:
+  ports:
+  - port: 11211
+    protocol: TCP
+    targetPort: 11211
+  selector:
+    app: memcached1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: memcached2
+  name: memcached2
+  namespace: 4labs
+spec:
+  ports:
+  - port: 11211
+    protocol: TCP
+    targetPort: 11211
+  selector:
+    app: memcached2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: frontend
+  name: frontend
+  namespace: 4labs
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: backend
+  name: backend
+  namespace: 4labs
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: backend
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-frontend
+  namespace: 4labs
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: frontend.4labs.example
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80

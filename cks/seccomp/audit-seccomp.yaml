@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: pod-seccomp
+  name: pod-seccomp
+spec:
+  securityContext:
+    seccompProfile:
+      type: Localhost
+      localhostProfile: profiles/audit.json        
+  containers:
+  - image: ubuntu
+    name: pod-seccomp
+    command: [ "/bin/bash", "-c", "--" ]
+    args: [ "ls /; while true; do sleep 30; done;" ]
+    securityContext:
+      allowPrivilegeEscalation: false    
+  nodeName: kube-node2

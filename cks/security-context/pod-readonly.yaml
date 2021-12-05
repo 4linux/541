@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-readonly
+spec:
+  containers:
+  - name: pod-readonly
+    image: alpine
+    imagePullPolicy: IfNotPresent
+    command: ["/bin/sleep", "999999"]
+    securityContext:
+      readOnlyRootFilesystem: true
+    volumeMounts:
+    - name: backup
+      mountPath: /backup
+      readOnly: false
+  volumes:
+  - name: backup
+    emptyDir:
