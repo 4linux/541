@@ -1,0 +1,1 @@
+kubeadm join 172.16.1.100:6443 --token qtcgje.tr6tgsk2zzd9s94l --discovery-token-ca-cert-hash sha256:9081b75ca6af5b89e9062bffd74245c12cdacc8632b21ca9d8734031d61f8e8d 

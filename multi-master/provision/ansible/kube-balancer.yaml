@@ -14,23 +14,7 @@
         - 172.16.0.152 kube-multi-master2
         - 172.16.0.153 kube-multi-master3
 
-    - name: Instalando pacotes de dependencias para o curso de Kubernetes
-      apt:
-        name: ['unzip', 'wget', 'elinks', 'rsync', 'vim', 'git', 'vim']
-
-    - name: Adicionar usuario suporte
-      user:
-        name: suporte
-        shell: /bin/bash
-        password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
-        
     - name: Clona repositorio com os arquivos do curso para a HOME do usuario suporte
       git:
         repo: 'https://github.com/4linux/4541.git'
         dest: /home/suporte/4541
-        
-    - name: Criando o arquivo 98_4linux
-      copy:
-        src: files/98_4linux
-        dest: /etc/sudoers.d
-        mode: 0644

@@ -15,19 +15,7 @@
 
     - name: Instalando pacotes de dependencias para o curso de Kubernetes
       yum:
-        name: ['unzip', 'wget', 'elinks', 'rsync', 'git', 'vim']
-
-    - name: Adicionar usuario suporte
-      user:
-        name: suporte
-        shell: /bin/bash
-        password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
-
-    - name: Criando o arquivo 98_4linux
-      copy:
-        src: files/98_4linux
-        dest: /etc/sudoers.d
-        mode: 0644
+        name: ['git']
 
     - name: Cria o diretório .ssh
       file:
@@ -57,20 +45,8 @@
       git:
         repo: 'https://github.com/4linux/4541.git'
         dest: /home/suporte/4541
-        
+
     - name: Clona repositório com os arquivos do curso para a HOME do usuario root
       git:
         repo: 'https://github.com/4linux/4541.git'
         dest: /root/4541
-
-    - name: Alterando arquivo do SELinux
-      lineinfile:
-          path: /etc/selinux/config
-          regexp: '^SELINUX='
-          line: 'SELINUX=disabled'
-
-    - name: Desabilitando o Firewall
-      command: systemctl disable firewalld
-
-    - name: Parando FirewallD
-      command: systemctl stop firewalld
