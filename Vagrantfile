@@ -5,8 +5,8 @@ VAGRANT_DISABLE_VBOXSYMLINKCREATE=1
 
 vms = {
   'kube-master' => {'memory' => '3584', 'cpus' => 2, 'ip' => '100', 'box' => 'devopsbox/ubuntu-20.04-docker', 'provision' => 'provision/ansible/kube-master.yaml'},
-  'kube-node1' => {'memory' => '1536', 'cpus' => 2, 'ip' => '101', 'box' => 'devopsbox/ubuntu-20.04-docker','provision' => 'provision/ansible/kube-node1.yaml'},
-  'kube-node2' => {'memory' => '1536', 'cpus' => 2, 'ip' => '102', 'box' => 'devopsbox/ubuntu-20.04-docker', 'provision' => 'provision/ansible/kube-node2.yaml'},
+  'kube-node1' => {'memory' => '1536', 'cpus' => 1, 'ip' => '101', 'box' => 'devopsbox/ubuntu-20.04-docker','provision' => 'provision/ansible/kube-node1.yaml'},
+  'kube-node2' => {'memory' => '1536', 'cpus' => 1, 'ip' => '102', 'box' => 'devopsbox/ubuntu-20.04-docker', 'provision' => 'provision/ansible/kube-node2.yaml'},
   'kube-registry' => {'memory' => '512', 'cpus' => 1, 'ip' => '103', 'box' => 'devopsbox/ubuntu-20.04-docker', 'provision' => 'provision/ansible/kube-registry.yaml'}
 }
 
