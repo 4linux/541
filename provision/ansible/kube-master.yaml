@@ -65,13 +65,7 @@
         dest: /home/suporte/.ssh/id_rsa.pub
         owner: suporte
         group: suporte
-        mode: 0644
-        
-    - name: Criando o arquivo 98_4linux
-      copy:
-        src: files/98_4linux
-        dest: /etc/sudoers.d
-        mode: 0644
+        mode: 0644        
 
     - name: Criando o arquivo etcd-v3.3.13-linux-amd64.tar
       copy:
