@@ -51,12 +51,6 @@
         repo: 'https://github.com/4linux/4541.git'
         dest: /home/devops/4541
 
-    - name: Criando o arquivo 98_4linux
-      copy:
-        src: files/registry/98_4linux
-        dest: /etc/sudoers.d
-        mode: 0644
-
     - name: Cria o diretorio auth para o usuario suporte
       file:
         path: /home/suporte/auth
