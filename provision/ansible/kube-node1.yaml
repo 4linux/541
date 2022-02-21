@@ -56,12 +56,6 @@
         owner: suporte
         group: suporte
         mode: '0755'
-
-    - name: Criando o arquivo 98_4linux
-      copy:
-        src: files/98_4linux
-        dest: /etc/sudoers.d
-        mode: 0644
         
     - name: Criando o arquivo authorized_keys
       copy:
