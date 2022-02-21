@@ -1,0 +1,24 @@
+---
+- name: kube-single-master
+  box: trombik/ansible-centos-7.3-x86_64
+  hostname: kube-single-master
+  ipaddress: 172.16.1.100
+  memory: 3072
+  cpus: 1
+  provision: provision/ansible/kube-single-master.yaml
+
+- name: kube-single-node1
+  box: trombik/ansible-centos-7.3-x86_64
+  hostname: kube-single-node1
+  ipaddress: 172.16.1.101
+  memory: 1536
+  cpus: 1
+  provision: provision/ansible/kube-single-node1.yaml
+
+- name: kube-single-node2
+  box: trombik/ansible-centos-7.3-x86_64
+  hostname: kube-single-node2
+  ipaddress: 172.16.1.102
+  memory: 1536
+  cpus: 1
+  provision: provision/ansible/kube-single-node2.yaml

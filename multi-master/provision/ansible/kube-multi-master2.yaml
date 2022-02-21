@@ -14,6 +14,33 @@
         - 172.16.0.152 kube-multi-master2
         - 172.16.0.153 kube-multi-master3
 
+    - name: Adiciona usuario suporte
+      user:
+        name: suporte
+        shell: /bin/bash
+        password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
+
+    - name: Criando o arquivo 98_4linux
+      copy:
+        src: files/98_4linux
+        dest: /etc/sudoers.d
+        mode: 0644
+
+    - name: Instala pacotes que permitem que o apt seja usado sobre HTTPS
+      apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: yes
+      vars:
+        packages:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg-agent
+        - software-properties-common
+        - git
+        - vim
+
     - name: Clona repositorio com os arquivos do curso para a HOME do usuario suporte
       git:
         repo: 'https://github.com/4linux/4541.git'
@@ -28,6 +55,32 @@
         recurse: yes
         mode: 0755
 
+    - name: Adiciona uma chave de assinatura apt para o Docker
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Adiciona repositorio apt para versao estavel
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+        state: present
+
+    - name: Instala o Docker e suas dependencias
+      apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: yes
+      vars:
+        packages:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+
+    - name: Adiciona o usuario suporte no grupo docker
+      user:
+        name: suporte
+        group: docker
+
     - name: Remove swap do arquivo /etc/fstab
       mount:
         name: "{{ item }}"
@@ -40,6 +93,17 @@
     - name: Desativa o swap
       command: swapoff -a
       when: ansible_swaptotal_mb > 0
+
+    - name: Adiciona uma chave de assinatura apt para o Kubernetes
+      apt_key:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        state: present
+
+    - name: Adiciona repositorio apt para Kubernetes
+      apt_repository:
+        repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+        state: present
+        filename: kubernetes.list
 
     - name: Instala os pacotes do Kubernetes
       apt:
