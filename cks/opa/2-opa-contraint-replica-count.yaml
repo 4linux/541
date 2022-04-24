@@ -8,6 +8,6 @@ spec:
       - apiGroups: ["apps"]
         kinds: ["Deployment"]
     namespaces:
-      - "curso"
+      - "devops"
   parameters:
     min: 2
