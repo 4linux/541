@@ -8,6 +8,6 @@ spec:
       - apiGroups: [""]
         kinds: ["Pod"]
     namespaces:
-      - "curso"
+      - "devops"
   parameters:
-    registry: "docker.io/"
+    registry: "quay.io/"
