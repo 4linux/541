@@ -10,4 +10,4 @@ spec:
     namespaces:
       - "devops"
   parameters:
-    registry: "quay.io/"
+    registry: "docker.io/"
