@@ -25,9 +25,9 @@
 
     - name: Criando o arquivo 98_4linux
       lineinfile:
-        path: /etc/sudoers/vagrant
+        path: /etc/sudoers
         state: present
-        insertafter: "vagrant ALL=(ALL) NOPASSWD: ALL"
+        insertafter: "root	ALL=(ALL:ALL) ALL"
         line: "suporte ALL=(ALL) NOPASSWD: ALL"        
     
     - name: Cria o diretório .ssh
