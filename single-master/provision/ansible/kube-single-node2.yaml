@@ -24,11 +24,12 @@
         password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
 
     - name: Criando o arquivo 98_4linux
-      copy:
-        src: files/98_4linux
-        dest: /etc/sudoers.d
-        mode: 0644
-
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        insertafter: "root	ALL=(ALL:ALL) ALL"
+        line: "suporte ALL=(ALL) NOPASSWD: ALL"
+    
     - name: Cria o diretório .ssh
       file:
         path: /root/.ssh
