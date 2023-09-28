@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mysql
+  name: mysql
+  namespace: 4labs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        name: mysql
+        env:
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-configmaps
+              key: MYSQL_DATABASE   
+        - name: MYSQL_USER
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-configmaps
+              key: MYSQL_USER   
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: MYSQL_PASSWORD   
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "0.2"
+          limits:
+            memory: "512Mi"
+            cpu: "0.4"
+        readinessProbe:
+          exec:
+            command:
+            - bash
+            - "-c"
+            - |
+              set -ex
+              mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -e 'SELECT 1' &> /dev/null
+          initialDelaySeconds: 5
+          periodSeconds: 2
+          timeoutSeconds: 1
+        volumeMounts:
+        - name: claim-nfs-mysql
+          mountPath: /var/lib/mysql
+
+        - name: mysql-db-config
+          mountPath: /docker-entrypoint-initdb.d/
+
+        - name: dump-usuarios
+          mountPath: /dump/
+
+      volumes:
+        - name: claim-nfs-mysql
+          persistentVolumeClaim:
+            claimName: claim-nfs-mysql
+
+        - name: mysql-db-config
+          configMap:
+            name: mysql-db-config
+
+        - name: dump-usuarios
+          configMap:
+            name: dump-usuarios          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mysql
+  name: mysql
+  namespace: 4labs
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: mysql

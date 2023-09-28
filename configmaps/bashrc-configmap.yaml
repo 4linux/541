@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bashrc-configmap
+data:
+  PS1: '${debian_chroot:+($debian_chroot)}\h:\w\$ '
+  TERM: linux

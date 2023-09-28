@@ -1,7 +1,0 @@
----
-resources:
-- ../../green
-
-patches:
-- path: patch-deployment.yaml
-- path: patch-service.yaml

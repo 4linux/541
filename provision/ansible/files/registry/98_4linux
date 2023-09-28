@@ -1,2 +1,2 @@
 suporte ALL=(ALL) NOPASSWD:ALL
-analista ALL=(ALL) NOPASSWD:ALL
+devops ALL=(ALL) NOPASSWD:ALL

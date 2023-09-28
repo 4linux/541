@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: dev
+    ver: "0.5"
+  name: pod2
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx
+    ports:
+      - containerPort: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: dev
+    ver: "0.5"
+  name: pod3
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    ports:
+      - containerPort: 80

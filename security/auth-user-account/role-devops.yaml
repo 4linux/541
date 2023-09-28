@@ -1,0 +1,27 @@
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: devops-role
+  namespace: 4labs
+rules:
+- apiGroups: [""]
+  resources: ["services", "pods", "persistentvolumeclaims", "secrets"]
+  verbs: ["get", "list", "create", "update", "patch", "delete"]
+- apiGroups: ["apps", "extensions", "networking.k8s.io"]
+  resources: ["deployments", "deployments/scale", "ingresses"]
+  verbs: ["get", "list", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: devops-role-binding
+  namespace: 4labs
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: devops-role
+subjects:
+- kind: User
+  name: devops
+  namespace: 4labs

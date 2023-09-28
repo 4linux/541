@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-configmap
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.28
+    imagePullPolicy: IfNotPresent
+    command:
+      - sleep
+      - "3600"
+    envFrom:
+      - configMapRef:
+          name: bashrc-configmap

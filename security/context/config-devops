@@ -1,0 +1,15 @@
+contexts:
+- context:
+    cluster: kubernetes
+    namespace: 4labs
+    user: devops
+  name: devops
+current-context: devops
+kind: Config
+preferences: {}
+users:
+- name: devops
+  user:
+    as-user-extra: {}
+    client-certificate: /home/devops/.certs/devops.crt
+    client-key: /home/devops/.certs/devops.key

@@ -1,1 +1,0 @@
-kubeadm join 172.16.1.100:6443 --token twphtm.s1e5xz0ii8n6y16c --discovery-token-ca-cert-hash sha256:f198fc474ee2254737677f1e5f61377f44d69095bf11676ed71f255958f671ab 

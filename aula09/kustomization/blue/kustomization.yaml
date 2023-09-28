@@ -1,4 +1,0 @@
----
-resources:
-- frontend-blue.yaml
-- frontend-service.yaml

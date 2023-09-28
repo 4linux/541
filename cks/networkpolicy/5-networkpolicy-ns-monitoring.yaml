@@ -1,0 +1,52 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: 5-ingress-from-ns-monitoring-frontend
+  namespace: 4labs
+spec:
+  podSelector:
+    matchLabels:
+      app: frontend
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: zabbix
+      namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: frontend
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: 5-ingress-from-ns-monitoring-backend
+  namespace: 4labs
+spec:
+  podSelector:
+    matchLabels:
+      app: backend
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: zabbix
+      namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: backend

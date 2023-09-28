@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: app
+  name: app
+  namespace: 4labs
+spec:
+  ports:
+  - nodePort: 31541
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: app
+  type: NodePort

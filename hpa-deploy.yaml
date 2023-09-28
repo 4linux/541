@@ -1,0 +1,37 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: hpa-deploy
+  labels:
+    app: hpa-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hpa-deploy
+  template:
+    metadata:
+      labels:
+        app: hpa-deploy
+    spec:
+      containers:
+      - name: hpa-deploy
+        image: k8s.gcr.io/hpa-example
+        resources:
+          requests:
+            cpu: "200m"
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hpa-deploy
+spec:
+  ports:
+  - name: http
+    targetPort: 80
+    port: 80
+  selector:
+    app: hpa-deploy

@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job1
+spec:
+  template:
+    metadata:
+      name: job1
+      labels:
+        app: job1
+    spec:
+      containers:
+      - name: job1
+        image: ubuntu
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: i
+            value: "1"
+        command: ["bash"]
+        args: ["-c", "while [[ i -le 10000 ]] ; do   echo $i; i=$((i+1)); done"]
+      restartPolicy: OnFailure
+  backoffLimit: 3

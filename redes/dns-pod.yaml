@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dns-pod
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.28
+    imagePullPolicy: IfNotPresent
+    command:
+      - sleep
+      - "3600"
+  dnsPolicy: "None"
+  dnsConfig:
+    nameservers:
+      - 172.16.1.103
+      - 10.96.0.10
+      - 8.8.8.8
+    searches:
+      - 4labs.example
+      - default.svc.cluster.local
