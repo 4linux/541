@@ -1,0 +1,12 @@
+$TTL 86400
+@   IN  SOA     registry.4labs.example. root.4labs.example. (
+        2020010101  ;Serial
+        3600        ;Refresh
+        1800        ;Retry
+        604800      ;Expire
+        86400       ;Minimum TTL
+)
+	IN	NS	registry.4labs.example.
+	IN	PTR	4labs.example.
+	IN	A	255.255.255.0
+103	IN	PTR	registry.4labs.example.

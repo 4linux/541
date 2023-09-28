@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: apache-http
+spec:
+  selector:
+    matchLabels:
+      app: httpd
+  serviceName: "httpd-service"
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: httpd
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: httpd
+        image: httpd:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+          name: web
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd-service
+  labels:
+    app: httpd
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    name: web
+    targetPort: 80
+  selector:
+    app: httpd
+  type: LoadBalancer
