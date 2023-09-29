@@ -15,12 +15,6 @@
         - 172.16.1.103 kube-infra
         - 172.16.1.202 docker-registry
 
-    - name: Adiciona usuario suporte
-      user:
-        name: suporte
-        shell: /bin/bash
-        password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
-        
     - name: Instala pacotes que permitem que o apt seja usado sobre HTTPS
       apt:
         name: "{{ packages }}"
@@ -36,16 +30,16 @@
         - git
         - vim
         
-    - name: Clona repositório com os arquivos do curso para a HOME do usuario suporte
-      git:
-        repo: 'https://github.com/4linux/541.git'
-        dest: /home/suporte/541
-        
     - name: Adiciona usuario analista
       user:
         name: analista
         shell: /bin/bash
         password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
+
+    - name: Clona repositório com os arquivos do curso para a HOME do usuario analista
+      git:
+        repo: 'https://github.com/4linux/541.git'
+        dest: /home/analista/541
 
     - name: Garantir permissão de superusuário para o usuário analista
       lineinfile:
@@ -53,89 +47,6 @@
         state: present
         insertafter: "suporte ALL=(ALL) NOPASSWD: ALL"
         line: "analista ALL=(ALL) NOPASSWD: ALL"
-
-    - name: Adiciona o usuario analista no grupo docker
-      user:
-        name: analista
-        group: docker
-
-    - name: Clona repositório com os arquivos do curso para a HOME do usuario analista
-      git:
-        repo: 'https://github.com/4linux/541.git'
-        dest: /home/analista/541
-
-    - name: Cria o diretorio auth para o usuario suporte
-      file:
-        path: /home/suporte/auth
-        state: directory
-        mode: '0775'
-
-    - name: Cria o diretorio certs para o usuario suporte
-      file:
-        path: /home/suporte/certs
-        state: directory
-        mode: '0775'
-
-    - name: Criando o arquivo htpasswd
-      copy:
-        src: files/htpasswd
-        dest: /home/suporte/auth
-        mode: 0664
-
-    - name: Criando o arquivo registry.crt
-      copy:
-        src: files/registry.crt
-        dest: /home/suporte/certs
-        mode: 0664
-
-    - name: Criando o arquivo registry.key
-      copy:
-        src: files/registry.key
-        dest: /home/suporte/certs
-        mode: 0664
-
-    - name: Criando o arquivo docker-compose.yaml
-      copy:
-        src: files/docker-compose.yaml
-        dest: /home/suporte
-        mode: 0644
-
-    - name: Definir permissao de acesso da HOME do usuario suporte
-      file:
-        path: /home/suporte
-        owner: suporte 
-        group: suporte 
-        state: directory
-        recurse: yes
-
-    - name: Criando diretório data
-      synchronize:
-        src: files/data
-        dest: /home/suporte
-
-    - name: Definir permissao de acesso do diretório data
-      file:
-        path: /home/suporte/data
-        owner: root 
-        group: root 
-        state: directory
-        recurse: yes
-        
-    - name: Cria o diretório .ssh
-      file:
-        path: /home/analista/.ssh
-        state: directory
-        owner: analista
-        group: analista
-        mode: '0755'
-        
-    - name: Criando o arquivo authorized_keys
-      copy:
-        src: files/authorized_keys
-        dest: /home/analista/.ssh/authorized_keys
-        owner: analista
-        group: analista
-        mode: 0644
 
     - name: Criando diretório /nfs
       file:
@@ -234,54 +145,13 @@
         - docker-ce-cli
         - containerd.io
 
-    - name: Adiciona o usuario suporte no grupo docker
+    - name: Adiciona o usuario analista no grupo docker
       user:
-        name: suporte
+        name: analista
         group: docker
-
-    - name: Cria o diretorio registry:5000
-      file:
-        path: /etc/docker/certs.d/registry:5000
-        state: directory
-        owner: root
-        group: root
-        mode: '0755'
-
-    - name: Criando o arquivo ca.crt
-      copy:
-        src: files/ca.crt
-        dest: /etc/docker/certs.d/registry:5000/
-        owner: root
-        group: root
-        mode: '0644'
-
-    - name: Criando o arquivo daemon.json
-      copy:
-        src: files/daemon.json
-        dest: /etc/docker/
-        owner: root
-        group: root
-        mode: '0644'
-   
-    - name: Cria o diretorio docker.service.d
-      file:
-        path: /etc/systemd/system/docker.service.d
-        state: directory
-        owner: root
-        group: root
-        mode: '0755'
         
     - name: Reinicia o Docker
       service:
         name: docker
         daemon_reload: yes
         state: restarted
-
-    - name: Instala o docker-compose
-      get_url:
-        url: https://github.com/docker/compose/releases/download/1.25.5/docker-compose-linux-x86_64
-        dest: /usr/local/bin/docker-compose
-        mode: '0755'
-
-    - name: Inicia o Docker Registry atraves do Docker Compose
-      command: docker-compose -f /home/suporte/docker-compose.yaml up -d
