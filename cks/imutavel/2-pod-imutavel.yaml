@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: pod-imutavel
+  name: pod-imutavel
+spec:
+  containers:
+  - image: httpd
+    name: pod-imutavel
+    securityContext:
+      readOnlyRootFilesystem: true
+    volumeMounts:
+    - name: apachelogs
+      mountPath: /usr/local/apache2/logs
+      readOnly: false
+  volumes:
+  - name: apachelogs
+    emptyDir: {}

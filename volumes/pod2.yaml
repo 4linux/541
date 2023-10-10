@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod2
+spec:
+  containers:
+  - image: busybox:1.28
+    imagePullPolicy: IfNotPresent
+    name: busybox
+    command:
+      - sleep
+      - "3600"
+    volumeMounts:
+    - mountPath: /backup
+      name: backup-volume
+  volumes:
+  - name: backup-volume
+    hostPath:
+      path: /home/suporte/data
+      type: Directory
+  nodeSelector:
+    kubernetes.io/hostname: kube-node2

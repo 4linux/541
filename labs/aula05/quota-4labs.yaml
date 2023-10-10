@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: 4labs-quota-limits
+  namespace: 4labs
+spec:
+  hard:
+    requests.cpu: "0.8"
+    requests.memory: 512Mi
+    limits.cpu: "1.5"
+    limits.memory: 1200Mi

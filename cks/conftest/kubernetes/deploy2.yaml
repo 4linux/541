@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app
+  name: app
+  annotations:
+    container.seccomp.security.alpha.kubernetes.io/pod: '*'
+    container.apparmor.security.beta.kubernetes.io/nginx: '*'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      serviceAccountName: operator
+      containers:
+      - image: registry:5000/4linux-app:v1
+        name: app
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "0.2"
+          limits:
+            memory: "256Mi"
+            cpu: "0.4"
+      securityContext:
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 10001
+        capabilities:
+          drop:
+          - index(\"ALL\")
+status: {}

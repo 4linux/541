@@ -1,0 +1,21 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job3
+spec:
+  parallelism: 3
+  template:
+    metadata:
+      name: job3
+      labels:
+        app: job3
+    spec:
+      containers:
+      - name: job3
+        image: ubuntu
+        imagePullPolicy: IfNotPresent
+        command: ["bash"]
+        args: ["-c",  "current=0; max=110; echo 1; echo 2; for((i=3;i<=max;)); do for((j=i-1;j>=2;)); do if [  `expr $i % $j` -ne 0 ] ; then current=1; else current=0; break; fi; j=`expr $j - 1`; done; if [ $current -eq 1 ] ; then echo $i; fi; i=`expr $i + 1`; done"]
+      restartPolicy: Never
+  backoffLimit: 3

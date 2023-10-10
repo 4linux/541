@@ -1,0 +1,91 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: php-volume
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /tmp
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/os
+          operator: In
+          values:
+          - linux
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: php-volume
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-storage
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: php
+  labels:
+    app: php
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php
+  template:
+    metadata:
+      labels:
+        app: php
+    spec:
+      volumes:
+      - name: php-volume
+        persistentVolumeClaim:
+          claimName: php-volume
+      containers:
+      - name: php
+        image: php:7.2-apache
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: php-volume
+          mountPath: /var/www/html
+      initContainers:
+      - name: busybox
+        image: busybox:1.28
+        command:
+          - sleep
+          - "3600"
+        volumeMounts:
+        - name: php-volume
+          mountPath: /var/www/html
+        command:
+        - wget
+        - "-O"
+        - "/var/www/html/index.php"
+        - https://raw.githubusercontent.com/do-community/php-kubernetes/master/index.php
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: php
+spec:
+  ports:
+  - name: http
+    targetPort: 80
+    port: 80
+  selector:
+    app: php
+  type: LoadBalancer

@@ -1,9 +1,0 @@
----
-replicaCount: 1
-persistence:
-  enabled: true
-  size: 20Gi
-  deleteEnabled: true
-  storageClass: nfs-client
-secrets:
-  htpasswd: htpasswd_hash

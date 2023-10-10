@@ -1,0 +1,61 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: backup-banco
+  namespace: 4labs
+spec:
+  jobTemplate:
+    metadata:
+      name: 4labs
+    spec:
+      template:
+        metadata:
+        spec:
+          containers:
+          - command:
+            - bash
+            - -c
+            - mysqldump --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" "$@" "${DB_NAME}" > "/app/db/${DB_NAME}-$(date '+%d-%m-%Y')".sql;
+            image: mariadb:latest
+            imagePullPolicy: IfNotPresent
+            name: backup-banco
+            env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-configmaps
+                  key: DB_HOST
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-configmaps
+                  key: DB_USER
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: app-configmaps
+                  key: DB_NAME
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: DB_PASS
+            resources:
+              requests:
+                memory: "32Mi"
+                cpu: "0.1"
+              limits:
+                memory: "100Mi"
+                cpu: "0.2"
+            volumeMounts:
+            - name: claim-nfs-app
+              mountPath: "/app"
+          volumes:
+          - name: claim-nfs-app
+            persistentVolumeClaim:
+              claimName: claim-nfs-app
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 30
+  schedule: '*/1 * * * *'
+  successfulJobsHistoryLimit: 3

@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: webserver
+  name: webserver
+  annotations:
+    container.seccomp.security.alpha.kubernetes.io/pod: '*'
+    container.apparmor.security.beta.kubernetes.io/nginx: '*'
+spec:
+  serviceAccountName: operator
+  containers:
+  - image: nginx
+    name: webserver
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "0.2"
+      limits:
+        memory: "256Mi"
+        cpu: "0.4"
+    securityContext:
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 10001
+      capabilities:
+        drop:
+        - index(\"ALL\")
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

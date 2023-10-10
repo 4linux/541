@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-capabilities
+spec:
+  containers:
+  - name: pod-capabilities
+    image: alpine
+    imagePullPolicy: IfNotPresent
+    command: ["/bin/sleep", "999999"]
+    securityContext:
+      capabilities:
+        add: ["NET_ADMIN", "SYS_TIME"]
+        drop:
+        - CHOWN

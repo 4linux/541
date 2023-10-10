@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-nonroot-context
+spec:
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+  containers:
+  - name: pod-nonroot-context
+    image: alpine
+    imagePullPolicy: IfNotPresent
+    command: ["/bin/sleep", "999999"]

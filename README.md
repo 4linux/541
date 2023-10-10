@@ -25,10 +25,10 @@ Nesse laboratório, que está centralizado no arquivo [Vagrantfile][7], sera cri
 
 Nome       | vCPUs | Memoria RAM | IP            | S.O.¹           
 ---------- |:-----:|:-----------:|:-------------:|:---------------:
-kube-master     | 2     | 3584MB | 172.16.1.100 | ubuntu-20.04-amd64
-kube-node1      | 2     | 2560MB | 172.16.1.101 | ubuntu-20.04-amd64
-kube-node2      | 2     | 2560MB | 172.16.1.102 | ubuntu-20.04-amd64
-kube-infra      | 1     | 512MB  | 172.16.1.103 | ubuntu-20.04-amd64 
+kube-master     | 2     | 3584MB | 172.16.1.100 | ubuntu-18.04-amd64
+kube-node1      | 2     | 1536MB | 172.16.1.101 | ubuntu-18.04-amd64
+kube-node2      | 2     | 1536MB | 172.16.1.102 | ubuntu-18.04-amd64
+kube-registry      | 1     | 512MB | 172.16.1.103 | ubuntu-18.04-amd64 
 
 > **¹**: Esses Sistemas operacionais estão sendo utilizado no formato de Boxes, é a forma como o vagrant chama as imagens do sistema operacional utilizado.
 
@@ -38,8 +38,8 @@ Criação do Laboratório
 Para criar o laboratório é necessário fazer o `git clone` desse repositório e, dentro da pasta baixada realizar a execução do `vagrant up`, conforme abaixo:
 
 ```bash
-git clone https://github.com/4linux/541
-cd 541/
+git clone https://github.com/4linux/4541
+cd 4541/
 vagrant up
 ```
 
