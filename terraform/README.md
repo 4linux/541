@@ -4,6 +4,7 @@
 1. habilita api computing
 1. coloca usuário de compute no grupo instance admin
 1. instala o ansible no cloud-shell
+1. exporta a variable do terraform pra definir o nome do projeto
 1. roda o terraform
 
 gcloud services enable compute.googleapis.com
