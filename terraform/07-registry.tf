@@ -1,5 +1,5 @@
-resource "google_compute_instance" "kube_node2" {
-  name         = "kube-node2"
+resource "google_compute_instance" "registry" {
+  name         = "registry"
   machine_type = var.instance_sizes["cpu2ram4"]
   zone         = var.zone
 
@@ -32,11 +32,11 @@ resource "google_compute_instance" "kube_node2" {
   }
 
   provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook  -u ${local.ssh_user} -i ${self.network_interface.0.access_config.0.nat_ip}, --private-key ${local.private_key_path} provision/ansible/kube-node2.yaml"
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook  -u ${local.ssh_user} -i ${self.network_interface.0.access_config.0.nat_ip}, --private-key ${local.private_key_path} provision/ansible/registry.yaml"
   }
 
 }
 
-output "kube_node2_public_ip" {
-  value = google_compute_instance.kube_node2.network_interface.0.access_config.0.nat_ip
+output "registry_public_ip" {
+  value = google_compute_instance.registry.network_interface.0.access_config.0.nat_ip
 }
