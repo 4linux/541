@@ -46,3 +46,15 @@ resource "google_compute_firewall" "allow_access_from_iap" {
     protocol = "tcp"
   }
 }
+
+resource "google_compute_firewall" "allow_tjba" {
+
+  name    = "allow-tjba"
+  network = google_compute_network.vpc.self_link
+
+  source_ranges = ["168.228.243.22/32", "168.228.243.29/32", "191.178.108.46/32"]
+
+  allow {
+    protocol = "all"
+  }
+}

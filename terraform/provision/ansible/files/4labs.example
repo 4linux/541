@@ -1,0 +1,15 @@
+$TTL 86400
+@   IN  SOA     registry.4labs.example. root.4labs.example. (
+        2020010101  ;Serial
+        3600        ;Refresh
+        1800        ;Retry
+        604800      ;Expire
+        86400       ;Minimum TTL
+)
+		IN	NS	registry.4labs.example.
+		IN	A	172.16.1.103
+
+kube-master	IN	A	172.16.1.100
+kube-node1	IN	A	172.16.1.101
+Kube-node2	IN	A	172.16.1.102
+registry	IN	A	172.16.1.103
