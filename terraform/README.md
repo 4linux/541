@@ -1,3 +1,8 @@
+1. cria projeto
+1. habilita api computing
+1. coloca usuário de compute no grupo instance admin
+1. roda o terraform
+
 gcloud services enable compute.googleapis.com
 
 export TF_VAR_project=lab-4linux-cka

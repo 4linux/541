@@ -187,6 +187,25 @@
       args:
         creates: /opt/init_cluster
 
+    - name: Cria o diretório .kube para o usuário ansible
+      file:
+        path: /home/ansible/.kube
+        state: directory
+        mode: '0755'
+
+    - name: Configura o kubeconfig para o usuario ansible
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/ansible/.kube/config
+        remote_src: yes
+
+    - name: Definir permissao de acesso ao arquivo config
+      file:
+        path: /home/ansible/.kube/config
+        owner: ansible
+        group: ansible
+        mode: '0644'
+
     - name: Cria o diretório .kube para o usuário suporte
       file:
         path: /home/suporte/.kube
