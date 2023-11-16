@@ -1,3 +1,8 @@
+locals {
+  ssh_user         = "ansible"
+  private_key_path = "./ansible-key"
+}
+
 variable "project" {
 }
 
