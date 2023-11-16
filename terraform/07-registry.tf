@@ -11,7 +11,7 @@ resource "google_compute_instance" "registry" {
 
   network_interface {
     subnetwork = google_compute_subnetwork.subnet_sp.self_link
-    network_ip = "172.16.1.101"
+    network_ip = "172.16.1.103"
     access_config{}
   }
 

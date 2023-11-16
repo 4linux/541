@@ -11,7 +11,7 @@ resource "google_compute_instance" "kube_node2" {
 
   network_interface {
     subnetwork = google_compute_subnetwork.subnet_sp.self_link
-    network_ip = "172.16.1.101"
+    network_ip = "172.16.1.102"
     access_config{}
   }
 
