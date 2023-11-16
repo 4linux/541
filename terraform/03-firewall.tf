@@ -46,6 +46,8 @@ resource "google_compute_firewall" "allow_all_ssh_only_to_ansible" {
     protocol = "tcp"
     ports = ["22"]
   }
+
+  disabled = true
 }
 
 resource "google_compute_firewall" "allow_access_from_iap" {

@@ -35,6 +35,8 @@ resource "google_compute_instance" "kube_node2" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook  -u ${local.ssh_user} -i ${self.network_interface.0.access_config.0.nat_ip}, --private-key ${local.private_key_path} provision/ansible/kube-node2.yaml"
   }
 
+  depends_on = [ google_compute_instance.kube_master ]
+
 }
 
 output "kube_node2_public_ip" {
