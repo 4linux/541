@@ -26,6 +26,16 @@ variable "subnet_range" {
   default = "172.16.1.0/24"
 }
 
+variable "private_ips" {
+  type  = map(string)
+  default = {
+    kube-master = "172.16.1.100"
+    kube-master = "172.16.1.100"
+    kube-master = "172.16.1.100"
+    kube-master = "172.16.1.100"
+  }
+}
+
 variable "instance_sizes" {
   description = "tamanhos de instancias para atender ao TR na AWS"
   type        = map(string)
