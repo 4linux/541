@@ -37,7 +37,7 @@ resource "google_compute_firewall" "allow_default" {
 
 resource "google_compute_firewall" "allow_all_ssh_only_to_ansible" {
 
-  name    = "allow-default"
+  name    = "allow-ssh"
   network = google_compute_network.vpc.self_link
 
   source_ranges = ["0.0.0.0/0"]
