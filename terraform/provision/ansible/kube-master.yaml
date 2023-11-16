@@ -161,7 +161,8 @@
 
     - name: Adiciona repositorio apt para Kubernetes
       apt_repository:
-        repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+        repo: deb [arch=amd64] https://apt.kubernetes.io/ kubernetes-xenial main
+        # repo: deb https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /'
         state: present
         filename: kubernetes.list
 
@@ -187,24 +188,24 @@
       args:
         creates: /opt/init_cluster
         
-    - name: Cria o diretório .kube para o usuário vagrant
-      file:
-        path: /home/vagrant/.kube
-        state: directory
-        mode: '0755'
+    # - name: Cria o diretório .kube para o usuário vagrant
+    #   file:
+    #     path: /home/vagrant/.kube
+    #     state: directory
+    #     mode: '0755'
 
-    - name: Configura o kubeconfig para o usuario vagrant
-      copy:
-        src: /etc/kubernetes/admin.conf
-        dest: /home/vagrant/.kube/config
-        remote_src: yes
+    # - name: Configura o kubeconfig para o usuario vagrant
+    #   copy:
+    #     src: /etc/kubernetes/admin.conf
+    #     dest: /home/vagrant/.kube/config
+    #     remote_src: yes
 
-    - name: Definir permissao de acesso ao arquivo config
-      file:
-        path: /home/vagrant/.kube/config
-        owner: vagrant
-        group: vagrant
-        mode: '0644'
+    # - name: Definir permissao de acesso ao arquivo config
+    #   file:
+    #     path: /home/vagrant/.kube/config
+    #     owner: vagrant
+    #     group: vagrant
+    #     mode: '0644'
 
     - name: Cria o diretório .kube para o usuário suporte
       file:
