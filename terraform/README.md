@@ -1,6 +1,9 @@
+# passo a passo pra preparação do ambiente na GCP
+
 1. cria projeto
 1. habilita api computing
 1. coloca usuário de compute no grupo instance admin
+1. instala o ansible no cloud-shell
 1. roda o terraform
 
 gcloud services enable compute.googleapis.com
