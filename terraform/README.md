@@ -16,3 +16,17 @@ export  ANSIBLE_HOST_KEY_CHECKING=False
 ansible-playbook -u ansible -i 34.151.198.8, --private-key ansible ../provision/ansible/kube-master.yaml 
 
 ansible-playbook -u ansible -i 35.198.40.201, --private-key ansible provision/ansible/kube-master.yaml
+
+## Comandos úteis gcloud
+
+gcloud compute firewall-rules update allow-ssh --disabled
+
+gcloud compute instances stop kube-node1 --zone=southamerica-east1-c
+
+gcloud compute instances stop kube-master --zone=southamerica-east1-c
+
+gcloud compute instances start kube-node1 --zone=southamerica-east1-c
+
+gcloud compute instances start kube-master --zone=southamerica-east1-c
+
+gcloud config set accessibility/screen_reader False
