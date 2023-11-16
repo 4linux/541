@@ -35,6 +35,19 @@ resource "google_compute_firewall" "allow_default" {
   }
 }
 
+resource "google_compute_firewall" "allow_all_ssh_only_to_ansible" {
+
+  name    = "allow-default"
+  network = google_compute_network.vpc.self_link
+
+  source_ranges = ["0.0.0.0/0"]
+
+  allow {
+    protocol = "tcp"
+    ports = ["22"]
+  }
+}
+
 resource "google_compute_firewall" "allow_access_from_iap" {
 
   name    = "allow-access-from-iap"
