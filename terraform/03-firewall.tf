@@ -42,12 +42,28 @@ resource "google_compute_firewall" "allow_all_ssh_only_to_ansible" {
 
   source_ranges = ["0.0.0.0/0"]
 
+
   allow {
     protocol = "tcp"
     ports = ["22"]
   }
 
   # disabled = true
+}
+
+resource "google_compute_firewall" "allow_all_web" {
+
+  name    = "allow-ssh"
+  network = google_compute_network.vpc.self_link
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags = ["web"]
+
+  allow {
+    protocol = "tcp"
+    ports = ["8080"]
+  }
+
 }
 
 resource "google_compute_firewall" "allow_access_from_iap" {

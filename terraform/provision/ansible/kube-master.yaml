@@ -19,6 +19,11 @@
         name: suporte
         shell: /bin/bash
         password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
+
+    - name: Adiciona o usuario suporte no grupo google-sudoers
+      user:
+        name: suporte
+        group: google-sudoers
         
     - name: Instala pacotes que permitem que o apt seja usado sobre HTTPS
       apt:
