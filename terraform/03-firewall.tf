@@ -51,9 +51,9 @@ resource "google_compute_firewall" "allow_all_ssh_only_to_ansible" {
   # disabled = true
 }
 
-resource "google_compute_firewall" "allow_all_web" {
+resource "google_compute_firewall" "allow_web" {
 
-  name    = "allow-ssh"
+  name    = "allow-web"
   network = google_compute_network.vpc.self_link
 
   source_ranges = ["0.0.0.0/0"]
