@@ -3,7 +3,7 @@ resource "google_compute_firewall" "allow_internal" {
   name    = "allow-internal"
   network = google_compute_network.vpc.self_link
 
-  source_ranges = [var.subnet_range, "192.168.0.0/16", "10.96.0.0/12"]
+  source_ranges = [var.subnet_range]
 
   allow {
     protocol = "all"
