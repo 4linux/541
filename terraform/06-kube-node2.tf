@@ -15,6 +15,8 @@ resource "google_compute_instance" "kube_node2" {
     access_config{}
   }
 
+  tags = ["kube-nodes"]
+
   allow_stopping_for_update = true
   deletion_protection       = false
 

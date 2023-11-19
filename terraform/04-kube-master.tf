@@ -15,7 +15,7 @@ resource "google_compute_instance" "kube_master" {
     access_config{}
   }
 
-  tags = ["web"]
+  tags = ["web","kube-nodes"]
 
   allow_stopping_for_update = true
   deletion_protection       = false
