@@ -6,19 +6,24 @@ resource "google_compute_firewall" "allow_internal" {
   source_ranges = [var.subnet_range, "192.168.0.0/16", "10.96.0.0/12"]
 
   allow {
-    protocol = "icmp"
+    protocol = "all"
   }
+
+  priority = 65534
+  
+}
+
+resource "google_compute_firewall" "allow_k8s" {
+
+  name    = "allow-internal"
+  network = google_compute_network.vpc.self_link
+
+  source_tags = ["kube-nodes"]
+  target_tags = ["kube-nodes"]
 
   allow {
-    ports    = ["0-65535"]
-    protocol = "tcp"
+    protocol = "all"
   }
-
-  allow {
-    ports    = ["0-65535"]
-    protocol = "udp"
-  }
-
 
   priority = 65534
 }
