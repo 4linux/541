@@ -25,7 +25,7 @@ resource "google_compute_firewall" "allow_k8s" {
     protocol = "all"
   }
 
-  priority = 65534
+  priority = 65533
 }
 
 resource "google_compute_firewall" "allow_default" {
