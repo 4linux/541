@@ -15,7 +15,7 @@ resource "google_compute_firewall" "allow_internal" {
 
 resource "google_compute_firewall" "allow_k8s" {
 
-  name    = "allow-internal"
+  name    = "allow-k8s"
   network = google_compute_network.vpc.self_link
 
   source_tags = ["kube-nodes"]
@@ -53,7 +53,7 @@ resource "google_compute_firewall" "allow_all_ssh_only_to_ansible" {
     ports = ["22"]
   }
 
-  # disabled = true
+  disabled = true
 }
 
 resource "google_compute_firewall" "allow_web" {
