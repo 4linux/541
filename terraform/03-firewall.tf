@@ -71,6 +71,23 @@ resource "google_compute_firewall" "allow_web" {
 
 }
 
+resource "google_compute_firewall" "allow_aula01" {
+
+  name    = "allow-web"
+  network = google_compute_network.vpc.self_link
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags = ["web"]
+
+  allow {
+    protocol = "tcp"
+    ports = ["31541"]
+  }
+
+  disabled = true
+
+}
+
 resource "google_compute_firewall" "allow_access_from_iap" {
 
   name    = "allow-access-from-iap"
@@ -80,17 +97,5 @@ resource "google_compute_firewall" "allow_access_from_iap" {
 
   allow {
     protocol = "tcp"
-  }
-}
-
-resource "google_compute_firewall" "allow_tjba" {
-
-  name    = "allow-tjba"
-  network = google_compute_network.vpc.self_link
-
-  source_ranges = ["168.228.243.22/32", "168.228.243.29/32", "191.178.108.46/32"]
-
-  allow {
-    protocol = "all"
   }
 }
