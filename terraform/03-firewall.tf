@@ -71,13 +71,13 @@ resource "google_compute_firewall" "allow_web" {
 
 }
 
-resource "google_compute_firewall" "allow_aula01" {
+resource "google_compute_firewall" "allow_node_port" {
 
-  name    = "allow-aula01"
+  name    = "allow-node-port"
   network = google_compute_network.vpc.self_link
 
   source_ranges = ["0.0.0.0/0"]
-  target_tags = ["web"]
+  target_tags = ["kube-nodes"]
 
   allow {
     protocol = "tcp"
