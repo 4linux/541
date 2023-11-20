@@ -73,7 +73,7 @@ resource "google_compute_firewall" "allow_web" {
 
 resource "google_compute_firewall" "allow_aula01" {
 
-  name    = "allow-web"
+  name    = "allow-aula01"
   network = google_compute_network.vpc.self_link
 
   source_ranges = ["0.0.0.0/0"]
