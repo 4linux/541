@@ -9,11 +9,18 @@ gcloud services enable compute.googleapis.com
 
 1. coloca usuário de compute no grupo instance admin
 1. instala o ansible no cloud-shell
+1. clona o repositorio
+
+```sh
+git clone 
+```
+
 1. exporta a variable do terraform pra definir o nome do projeto
 
 ```sh
 export TF_VAR_project=lab-4linux-cka
 ```
+
 1. roda o terraform
 
 ## bash completion
