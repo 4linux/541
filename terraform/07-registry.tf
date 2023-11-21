@@ -1,18 +1,18 @@
 resource "google_compute_instance" "registry" {
   name         = "registry"
   machine_type = var.instance_sizes["cpu2ram4"]
-  zone         = var.zone2
+  zone         = var.zone
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2004-lts"
+      image = var.image
     }
   }
 
   network_interface {
     subnetwork = google_compute_subnetwork.subnet_sp.self_link
     network_ip = "172.16.1.103"
-    access_config{}
+    access_config {}
   }
 
   allow_stopping_for_update = true
@@ -35,7 +35,7 @@ resource "google_compute_instance" "registry" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook  -u ${local.ssh_user} -i ${self.network_interface.0.access_config.0.nat_ip}, --private-key ${local.private_key_path} provision/ansible/kube-registry.yaml"
   }
 
-  depends_on = [ google_compute_instance.kube_node1, google_compute_instance.kube_node2 ]
+  depends_on = [google_compute_instance.kube_node1, google_compute_instance.kube_node2]
 
 }
 

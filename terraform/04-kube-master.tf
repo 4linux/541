@@ -1,21 +1,21 @@
 resource "google_compute_instance" "kube_master" {
   name         = "kube-master"
   machine_type = var.instance_sizes["cpu2ram4"]
-  zone         = var.zone2
+  zone         = var.zone
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2004-lts"
+      image = var.image
     }
   }
 
   network_interface {
     subnetwork = google_compute_subnetwork.subnet_sp.self_link
     network_ip = "172.16.1.100"
-    access_config{}
+    access_config {}
   }
 
-  tags = ["web","kube-nodes"]
+  tags = ["web", "kube-nodes"]
 
   allow_stopping_for_update = true
   deletion_protection       = false

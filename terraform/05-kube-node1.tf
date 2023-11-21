@@ -1,18 +1,18 @@
 resource "google_compute_instance" "kube_node1" {
   name         = "kube-node1"
   machine_type = var.instance_sizes["cpu2ram4"]
-  zone         = var.zone2
+  zone         = var.zone
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2004-lts"
+      image = var.image
     }
   }
 
   network_interface {
     subnetwork = google_compute_subnetwork.subnet_sp.self_link
     network_ip = "172.16.1.101"
-    access_config{}
+    access_config {}
   }
 
   tags = ["kube-nodes"]
@@ -37,7 +37,7 @@ resource "google_compute_instance" "kube_node1" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook  -u ${local.ssh_user} -i ${self.network_interface.0.access_config.0.nat_ip}, --private-key ${local.private_key_path} provision/ansible/kube-node1.yaml"
   }
 
-  depends_on = [ google_compute_instance.kube_master ]
+  depends_on = [google_compute_instance.kube_master]
 
 }
 

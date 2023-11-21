@@ -7,19 +7,17 @@ variable "project" {
 }
 
 variable "region" {
-  default = "southamerica-east1"
-}
-
-variable "zone" {
-  default = "southamerica-east1-c"
-}
-
-variable "region2" {
+  # default = "southamerica-east1"
   default = "us-east1"
 }
 
-variable "zone2" {
+variable "zone" {
+  # default = "southamerica-east1-c"
   default = "us-east1-c"
+}
+
+variable "image" {
+  default = "ubuntu-os-cloud/ubuntu-2004-lts"
 }
 
 variable "vpc_name" {
@@ -35,7 +33,7 @@ variable "subnet_range" {
 }
 
 variable "private_ips" {
-  type  = map(string)
+  type = map(string)
   default = {
     kube-master = "172.16.1.100"
     kube-master = "172.16.1.100"

@@ -10,7 +10,7 @@ resource "google_compute_firewall" "allow_internal" {
   }
 
   priority = 65534
-  
+
 }
 
 resource "google_compute_firewall" "allow_k8s" {
@@ -50,7 +50,7 @@ resource "google_compute_firewall" "allow_all_ssh_only_to_ansible" {
 
   allow {
     protocol = "tcp"
-    ports = ["22"]
+    ports    = ["22"]
   }
 
   # disabled = true
@@ -62,11 +62,11 @@ resource "google_compute_firewall" "allow_web" {
   network = google_compute_network.vpc.self_link
 
   source_ranges = ["0.0.0.0/0"]
-  target_tags = ["web"]
+  target_tags   = ["web"]
 
   allow {
     protocol = "tcp"
-    ports = ["8080"]
+    ports    = ["8080"]
   }
 
 }
@@ -77,11 +77,11 @@ resource "google_compute_firewall" "allow_node_port" {
   network = google_compute_network.vpc.self_link
 
   source_ranges = ["0.0.0.0/0"]
-  target_tags = ["kube-nodes"]
+  target_tags   = ["kube-nodes"]
 
   allow {
     protocol = "tcp"
-    ports = ["31541"]
+    ports    = ["31541"]
   }
 
   disabled = true
