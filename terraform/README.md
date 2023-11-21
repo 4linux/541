@@ -57,11 +57,11 @@ gcloud config set accessibility/screen_reader False
 
 gcloud config set compute/zone us-east1-c
 
-gcloud services enable compute.googleapis.com
-
 gcloud compute firewall-rules update allow-ssh --disabled
 
 gcloud compute firewall-rules update allow-ssh --no-disabled
+
+gcloud compute ssh kube-master --tunnel-through-iap
 
 gcloud compute instances stop kube-node1 --zone=southamerica-east1-c
 
@@ -70,6 +70,8 @@ gcloud compute instances stop kube-master --zone=southamerica-east1-c
 gcloud compute instances start kube-node1 --zone=southamerica-east1-c
 
 gcloud compute instances start kube-master --zone=southamerica-east1-c 
+
+gcloud services enable compute.googleapis.com
 
 ## Referências
 
