@@ -55,6 +55,8 @@ echo 'complete -o default -F __start_kubectl k' >>~/.bashrc
 
 gcloud config set accessibility/screen_reader False
 
+gcloud config set compute/zone us-east1-c
+
 gcloud services enable compute.googleapis.com
 
 gcloud compute firewall-rules update allow-ssh --disabled
