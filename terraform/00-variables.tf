@@ -25,7 +25,7 @@ variable "vpc_name" {
 }
 
 variable "subnet_name" {
-  default = "cka-4linux-br"
+  default = "cka-4linux-subnet"
 }
 
 variable "subnet_range" {
