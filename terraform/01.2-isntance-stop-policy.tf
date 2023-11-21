@@ -4,7 +4,7 @@ resource "google_compute_resource_policy" "daily" {
   description = "Stop instances"
   instance_schedule_policy {
     vm_stop_schedule {
-      schedule = "00 23 * * *"
+      schedule = "00 03,07,14,17,23 * * *"
     }
     time_zone = "America/Bahia"
   }
