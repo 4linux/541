@@ -14,6 +14,14 @@ variable "zone" {
   default = "southamerica-east1-c"
 }
 
+variable "region2" {
+  default = "us-east1"
+}
+
+variable "zone2" {
+  default = "us-east1-c"
+}
+
 variable "vpc_name" {
   default = "cka-4linux"
 }

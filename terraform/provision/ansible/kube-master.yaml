@@ -159,7 +159,16 @@
       command: swapoff -a
       when: ansible_swaptotal_mb > 0
 
+  
+      - name: Inicializa o cluster Kubernetes atraves da ferramenta kubeadm
+      shell: kubeadm init --apiserver-advertise-address="172.16.1.100" --apiserver-cert-extra-sans="172.16.1.100" --node-name kube-master --pod-network-cidr=192.168.0.0/16 --kubernetes-version=1.21.1 --ignore-preflight-errors=all > /opt/init_cluster
+      args:
+        creates: /opt/init_cluster
+
     - name: Adiciona uma chave de assinatura apt para o Kubernetes
+      # shell: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg
+      # args:
+      #   creates: /etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg
       apt_key:
         url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
         state: present
@@ -167,6 +176,7 @@
     - name: Adiciona repositorio apt para Kubernetes
       apt_repository:
         repo: deb [arch=amd64] https://apt.kubernetes.io/ kubernetes-xenial main
+        # repo: deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.21/deb/ /
         state: present
         filename: kubernetes.list
 

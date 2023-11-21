@@ -8,11 +8,28 @@ gcloud services enable compute.googleapis.com
 ```
 
 1. coloca usuário de compute no grupo instance admin
-1. instala o ansible no cloud-shell
+1. instala o ansible e rsync no cloud-shell
+
+```sh
+apt update; apt install -y ansible rsync
+```
+
 1. clona o repositorio
 
 ```sh
-git clone 
+git clone https://github.com/4linux/4541.git
+```
+
+1. faz checkout na branch gcp
+
+```sh
+git checkout gcp
+```
+
+1. dentro do diretorio terraform, altera a permissão da chave ansible-key
+
+```sh
+chmod 400 ansible-key
 ```
 
 1. exporta a variable do terraform pra definir o nome do projeto
@@ -20,7 +37,6 @@ git clone
 ```sh
 export TF_VAR_project=lab-4linux-cka
 ```
-
 1. roda o terraform
 
 ## bash completion
