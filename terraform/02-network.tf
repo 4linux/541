@@ -9,7 +9,7 @@ resource "google_compute_subnetwork" "subnet_sp" {
   name    = var.subnet_name
   network = google_compute_network.vpc.self_link
 
-  region = var.region
+  region = var.region2
 }
 
 resource "google_compute_router" "router" {

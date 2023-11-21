@@ -1,7 +1,7 @@
 resource "google_compute_instance" "registry" {
   name         = "registry"
   machine_type = var.instance_sizes["cpu2ram4"]
-  zone         = var.zone
+  zone         = var.zone2
 
   boot_disk {
     initialize_params {
@@ -34,6 +34,8 @@ resource "google_compute_instance" "registry" {
   provisioner "local-exec" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook  -u ${local.ssh_user} -i ${self.network_interface.0.access_config.0.nat_ip}, --private-key ${local.private_key_path} provision/ansible/kube-registry.yaml"
   }
+
+  depends_on = [ google_compute_instance.kube_node1, google_compute_instance.kube_node2 ]
 
 }
 
