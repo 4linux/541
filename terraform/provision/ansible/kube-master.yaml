@@ -160,9 +160,6 @@
       when: ansible_swaptotal_mb > 0
 
     - name: Adiciona uma chave de assinatura apt para o Kubernetes
-      # shell: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg
-      # args:
-      #   creates: /etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg
       apt_key:
         url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
         state: present
@@ -170,7 +167,6 @@
     - name: Adiciona repositorio apt para Kubernetes
       apt_repository:
         repo: deb [arch=amd64] https://apt.kubernetes.io/ kubernetes-xenial main
-        # repo: deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.21/deb/ /
         state: present
         filename: kubernetes.list
 
