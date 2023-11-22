@@ -11,7 +11,7 @@
 1. instala o ansible e rsync no cloud-shell
 
     ```sh
-    apt update; sudo apt install -y ansible rsync
+    sudo apt update; sudo apt install -y ansible rsync
     ```
 
 1. clona o repositorio
