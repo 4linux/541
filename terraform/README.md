@@ -50,6 +50,12 @@
     export TF_VAR_project=lab-4linux-cka
     ```
 
+1. valida que a variavel esta correta
+
+    ```sh
+    echo $TF_VAR_project
+    ```
+
 1. Inicializa o terraform
 
     ```sh
