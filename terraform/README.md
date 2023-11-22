@@ -94,6 +94,8 @@ gcloud config set accessibility/screen_reader False
 
 gcloud config set compute/zone us-east1-c
 
+gcloud compute firewall-rules list
+
 gcloud compute firewall-rules update allow-ssh --disabled
 
 gcloud compute firewall-rules update allow-ssh --no-disabled
