@@ -1,13 +1,15 @@
 # passo a passo pra preparação do ambiente na GCP
 
 1. cria projeto
+
 1. habilita api computing
 
     ```sh
     gcloud services enable compute.googleapis.com
     ```
 
-1. coloca usuário de compute no grupo instance admin
+1. coloca usuário de `service-<id-do-projeto>@compute-system.iam.gserviceaccount.com` no grupo instance admin
+
 1. instala o ansible e rsync no cloud-shell
 
     ```sh
