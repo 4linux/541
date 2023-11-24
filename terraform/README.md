@@ -102,6 +102,10 @@ gcloud compute firewall-rules update allow-ssh --disabled
 
 gcloud compute firewall-rules update allow-ssh --no-disabled
 
+gcloud compute firewall-rules update allow-node-port --disabled
+
+gcloud compute firewall-rules update allow-node-port --no-disabled
+
 gcloud compute instances list
 
 gcloud compute ssh kube-master --tunnel-through-iap --zone=us-east1-c
