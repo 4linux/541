@@ -106,6 +106,8 @@ gcloud compute firewall-rules update allow-node-port --disabled
 
 gcloud compute firewall-rules update allow-node-port --no-disabled
 
+gcloud compute firewall-rules create example-service --network=cka-4linux --allow tcp:30767 --target-tags=kube-nodes
+
 gcloud compute instances list
 
 gcloud compute ssh kube-master --tunnel-through-iap --zone=us-east1-c
