@@ -106,7 +106,11 @@ gcloud compute firewall-rules update allow-node-port --disabled
 
 gcloud compute firewall-rules update allow-node-port --no-disabled
 
-gcloud compute firewall-rules create example-service --network=cka-4linux --allow tcp:30767 --target-tags=kube-nodes
+gcloud compute firewall-rules create svc1 --network=cka-4linux --allow tcp:32439 --target-tags=kube-nodes
+
+gcloud compute firewall-rules create svc2 --network=cka-4linux --allow tcp:31468 --target-tags=kube-nodes
+
+gcloud compute firewall-rules create ingress --network=cka-4linux --allow tcp:31667 --target-tags=kube-nodes
 
 gcloud compute instances list
 
