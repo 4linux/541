@@ -90,6 +90,26 @@ echo 'alias k=kubectl' >>~/.bashrc
 
 echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc
 
+## restore control plane
+
+1. entra no diretorio
+
+    ```sh
+    cd 4541
+    ```
+
+1. habilita o firewall
+
+    ```sh
+    gcloud compute firewall-rules update allow-ssh --no-disabled
+    ```
+
+1. habilita o firewall
+
+    ```sh
+    gcloud compute firewall-rules update allow-ssh --no-disabled
+    ```
+
 ## Comandos úteis gcloud
 
 gcloud config set accessibility/screen_reader False
