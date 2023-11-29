@@ -104,11 +104,43 @@ echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc
     gcloud compute firewall-rules update allow-ssh --no-disabled
     ```
 
-1. habilita o firewall
+1. faz um git pull
+
+    ```sh
+    git pull
+    ```
+
+1. copia o backup dos arquivos pro no1, usando o ip publico do nó
 
     ```sh
     scp -i ansible-key control-plane.tar.gz ansible@35.185.121.219:/tmp/
     ```
+
+1. acessa o ssh do no1 e vira root
+
+    ```sh
+    cd /etc/kubernetes/manifests/
+    ```
+
+1. copia da pasta /tmp/ para /etc/kubernetes/manifests/
+
+    ```sh
+    cp /root/control-plane.tar.gz .
+    ```
+
+1. desempacota os arquivos
+
+    ```sh
+    tar xzvf control-plane.tar.gz
+    ```
+
+1. remove o backup
+
+    ```sh
+    rm control-plane.tar.gz
+    ```
+
+1. em outra janela testa o acesso ao cluster via kubectl
 
 ## Comandos úteis gcloud
 
