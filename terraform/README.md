@@ -95,7 +95,7 @@ echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc
 1. entra no diretorio
 
     ```sh
-    cd 4541
+    cd 4541/terraform/
     ```
 
 1. habilita o firewall
