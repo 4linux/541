@@ -107,7 +107,7 @@ echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc
 1. habilita o firewall
 
     ```sh
-    gcloud compute firewall-rules update allow-ssh --no-disabled
+    scp -i ansible-key control-plane.tar.gz ansible@35.185.121.219:/tmp/
     ```
 
 ## Comandos úteis gcloud
