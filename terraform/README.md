@@ -65,16 +65,30 @@
     ```
 
 
-1. Inicializa o terraform
+1. valida as alterações o terraform
 
     ```sh
     terraform plan
     ```
 
-1. Inicializa o terraform
+1. aplica o terraform
 
     ```sh
     terraform apply -auto-approve
+
+    ```
+
+1. desabilita o ssh geral
+
+    ```sh
+    gcloud compute firewall-rules update allow-ssh --disabled
+
+    ```
+
+1. testa a conexão ao kube-master
+
+    ```sh
+    gcloud compute ssh kube-master --tunnel-through-iap --zone=us-east1-c
 
     ```
 
@@ -163,6 +177,8 @@ gcloud compute firewall-rules create svc1 --network=cka-4linux --allow tcp:32439
 gcloud compute firewall-rules create svc2 --network=cka-4linux --allow tcp:31468 --target-tags=kube-nodes
 
 gcloud compute firewall-rules create ingress --network=cka-4linux --allow tcp:31667 --target-tags=kube-nodes
+
+gcloud compute firewall-rules create allow-k8s-api --network=cka-4linux --allow tcp:6443 --target-tags=kube-nodes
 
 gcloud compute instances list
 
