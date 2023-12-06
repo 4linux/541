@@ -20,6 +20,10 @@ variable "image" {
   default = "ubuntu-os-cloud/ubuntu-2004-lts"
 }
 
+variable "image-single-master" {
+  default = "centos-cloud/centos7"
+}
+
 variable "vpc_name" {
   default = "cka-4linux"
 }
@@ -35,10 +39,9 @@ variable "subnet_range" {
 variable "private_ips" {
   type = map(string)
   default = {
-    kube-master = "172.16.1.100"
-    kube-master = "172.16.1.100"
-    kube-master = "172.16.1.100"
-    kube-master = "172.16.1.100"
+    kube-single-master = "172.16.1.110"
+    kube-single-node1 = "172.16.1.111"
+    kube-single-node2 = "172.16.1.112"
   }
 }
 
