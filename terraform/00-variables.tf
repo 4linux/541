@@ -42,6 +42,10 @@ variable "private_ips" {
     kube-single-master = "172.16.1.110"
     kube-single-node1 = "172.16.1.111"
     kube-single-node2 = "172.16.1.112"
+    kube-balancer = "172.16.1.150"
+    kube-multi-master1 = "172.16.1.151"
+    kube-multi-master2 = "172.16.1.152"
+    kube-multi-master3 = "172.16.1.153"
   }
 }
 
