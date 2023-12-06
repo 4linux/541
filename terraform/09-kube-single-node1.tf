@@ -39,8 +39,6 @@ resource "google_compute_instance" "kube_single_node1" {
 
   depends_on = [google_compute_instance.kube_single_master]
 
-  desired_status = "TERMINATED"
-
 }
 
 output "kube_single_node1_public_ip" {

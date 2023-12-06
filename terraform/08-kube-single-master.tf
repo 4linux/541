@@ -36,9 +36,7 @@ resource "google_compute_instance" "kube_single_master" {
   provisioner "local-exec" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook  -u ${local.ssh_user} -i ${self.network_interface.0.access_config.0.nat_ip}, --private-key ${local.private_key_path} provision/ansible/kube-single-master.yaml"
   }
-
-  desired_status = "TERMINATED"
-
+  
 }
 
 output "kube_single_master_public_ip" {

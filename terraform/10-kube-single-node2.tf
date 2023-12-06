@@ -39,7 +39,6 @@ resource "google_compute_instance" "kube_single_node2" {
 
   depends_on = [google_compute_instance.kube_single_master]
 
-  desired_status = "TERMINATED"
 
 }
 
