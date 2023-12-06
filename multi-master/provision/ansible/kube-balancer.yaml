@@ -16,7 +16,7 @@
 
     - name: Instalando pacotes de dependencias para o curso de Kubernetes
       apt:
-        name: ['unzip', 'wget', 'elinks', 'rsync', 'vim', 'git', 'vim']
+        name: ['unzip', 'wget', 'links', 'rsync', 'vim', 'git', 'vim']
 
     - name: Adicionar usuario suporte
       user:
