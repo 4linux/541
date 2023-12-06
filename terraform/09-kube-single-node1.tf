@@ -1,6 +1,6 @@
 resource "google_compute_instance" "kube_single_node1" {
   name         = "kube-single-node1"
-  machine_type = var.instance_sizes["cpu2ram4"]
+  machine_type = var.instance_sizes["cpu2ram2"]
   zone         = var.zone
 
   boot_disk {
@@ -37,7 +37,9 @@ resource "google_compute_instance" "kube_single_node1" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook  -u ${local.ssh_user} -i ${self.network_interface.0.access_config.0.nat_ip}, --private-key ${local.private_key_path} provision/ansible/kube-single-node1.yaml"
   }
 
-  depends_on = [google_compute_instance.kube_master]
+  depends_on = [google_compute_instance.kube_single_master]
+
+  desired_status = "TERMINATED"
 
 }
 

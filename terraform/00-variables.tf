@@ -49,6 +49,7 @@ variable "instance_sizes" {
   description = "tamanhos de instancias para atender ao TR na AWS"
   type        = map(string)
   default = {
+    cpu2ram2 = "e2-small"
     cpu2ram4  = "e2-medium"
     cpu4ram16 = "e2-standard-4"
   }
