@@ -9,7 +9,7 @@
         path: /etc/hosts
         line: "{{ item }}"
       with_items:
-        - 172.16.1.100 kube-single-master
+        - 172.16.1.110 kube-single-master
         - 172.16.1.111 kube-single-node1
         - 172.16.1.112 kube-single-node2
 

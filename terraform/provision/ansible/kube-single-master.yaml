@@ -10,8 +10,8 @@
         line: "{{ item }}"
       with_items:
         - 172.16.1.110 kube-single-master
-        - 172.16.1.101 kube-single-node1
-        - 172.16.1.102 kube-single-node2
+        - 172.16.1.111 kube-single-node1
+        - 172.16.1.112 kube-single-node2
 
     - name: Instalando pacotes de dependencias para o curso de Kubernetes
       yum:
