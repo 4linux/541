@@ -5,7 +5,7 @@ resource "google_compute_instance" "kube_single_node2" {
 
   boot_disk {
     initialize_params {
-      image = var.image
+      image = var.image-single-master
     }
   }
 
