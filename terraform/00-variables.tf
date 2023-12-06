@@ -21,7 +21,7 @@ variable "image" {
 }
 
 variable "image-single-master" {
-  default = "centos-cloud/centos7"
+  default = "centos-cloud/centos-7"
 }
 
 variable "vpc_name" {
