@@ -1,5 +1,5 @@
 resource "google_compute_instance" "kube_multi_master2" {
-  name         = "kube-multi-master1"
+  name         = "kube-multi-master2"
   machine_type = var.instance_sizes["cpu2ram2"]
   zone         = var.zone
 
@@ -11,7 +11,7 @@ resource "google_compute_instance" "kube_multi_master2" {
 
   network_interface {
     subnetwork = google_compute_subnetwork.subnet_sp.self_link
-    network_ip = var.private_ips["kube-multi-master1"]
+    network_ip = var.private_ips["kube-multi-master2"]
     access_config {}
   }
 
@@ -34,7 +34,7 @@ resource "google_compute_instance" "kube_multi_master2" {
   }
 
   provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook  -u ${local.ssh_user} -i ${self.network_interface.0.access_config.0.nat_ip}, --private-key ${local.private_key_path} provision/ansible/kube-multi-master1.yaml"
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook  -u ${local.ssh_user} -i ${self.network_interface.0.access_config.0.nat_ip}, --private-key ${local.private_key_path} provision/ansible/kube-multi-master2.yaml"
   }
   
 }
