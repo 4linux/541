@@ -36,6 +36,8 @@ resource "google_compute_instance" "kube_multi_master2" {
   provisioner "local-exec" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook  -u ${local.ssh_user} -i ${self.network_interface.0.access_config.0.nat_ip}, --private-key ${local.private_key_path} provision/ansible/kube-multi-master2.yaml"
   }
+
+  depends_on = [ google_compute_instance.kube_multi_master1 ]
   
 }
 
