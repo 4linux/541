@@ -1,6 +1,6 @@
 resource "google_compute_instance" "kube_multi_master3" {
   name         = "kube-multi-master3"
-  machine_type = var.instance_sizes["cpu2ram2"]
+  machine_type = var.instance_sizes["cpu2ram4"]
   zone         = var.zone
 
   boot_disk {
