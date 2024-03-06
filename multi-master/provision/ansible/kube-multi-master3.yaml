@@ -40,6 +40,9 @@
         - software-properties-common
         - git
         - vim
+        - ebtables
+        - ethtool
+        - conntrack
 
     - name: Clona repositorio com os arquivos do curso para a HOME do usuario suporte
       git:
