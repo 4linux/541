@@ -154,34 +154,85 @@
       command: swapoff -a
       when: ansible_swaptotal_mb > 0
 
-    - name: Adiciona uma chave de assinatura apt para o Kubernetes
-      apt_key:
-        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-        state: present
+    - name: Realiza o download do binario kubeadm
+      get_url:
+        url: https://dl.k8s.io/release/v1.21.1/bin/linux/amd64/kubeadm
+        dest: /tmp/kubeadm
+        mode: '0755'
 
-    - name: Adiciona repositorio apt para Kubernetes
-      apt_repository:
-        repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
-        state: present
-        filename: kubernetes.list
+    - name: Instala o kubeadm
+      shell: "install -o root -g root -m 0755 /tmp/kubeadm /usr/bin/kubeadm"
+      args:
+        warn: false      
 
-    - name: Instala os pacotes do Kubernetes
-      apt:
-        name: "{{ packages }}"
-        state: present
-        update_cache: yes
-      vars:
-        packages:
-        - kubelet=1.21.1-00
-        - kubeadm=1.21.1-00
-        - kubectl=1.21.1-00
+    - name: Realiza o download do binario kubelet
+      get_url:
+        url: https://dl.k8s.io/release/v1.21.1/bin/linux/amd64/kubelet
+        dest: /tmp/kubelet
+        mode: '0755'
 
-    - name: Reinicia o kubelet
-      service:
-        name: kubelet
+    - name: Instala o kubelet
+      shell: "install -o root -g root -m 0755 /tmp/kubelet /usr/bin/kubelet"
+      args:
+        warn: false      
+
+    - name: Realiza o download do binario kubectl
+      get_url:
+        url: https://dl.k8s.io/release/v1.21.1/bin/linux/amd64/kubectl
+        dest: /tmp/kubectl
+        mode: '0755'
+
+    - name: Instala o kubectl
+      shell: "install -o root -g root -m 0755 /tmp/kubectl /usr/bin/kubectl"
+      args:
+        warn: false      
+
+    - name: Criar diretório /etc/systemd/system/kubelet.service.d para apt do Kubernetes
+      file:
+        path: /etc/systemd/system/kubelet.service.d
+        state: directory
+
+    - name: Criar o arquivo de configuração 10-kubeadm.conf
+      copy:
+        content: |
+          [Service]
+          Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf"
+          Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml"
+          EnvironmentFile=-/var/lib/kubelet/kubeadm-flags.env
+          EnvironmentFile=-/etc/default/kubelet
+          ExecStart=
+          ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_CONFIG_ARGS $KUBELET_KUBEADM_ARGS $KUBELET_EXTRA_ARGS
+        dest: /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
+    - name: Criar o arquivo de serviço kubelet
+      copy:
+        content: |
+          [Unit]
+          Description=kubelet: The Kubernetes Node Agent
+          Documentation=https://kubernetes.io/docs/home/
+          Wants=network-online.target
+          After=network-online.target
+
+          [Service]
+          ExecStart=/usr/bin/kubelet
+          Restart=always
+          StartLimitInterval=0
+          RestartSec=10
+
+          [Install]
+          WantedBy=multi-user.target
+        dest: /lib/systemd/system/kubelet.service
+
+    - name: Recarregar o daemon do systemd
+      systemd:
         daemon_reload: yes
-        state: restarted
 
+    - name: Habilitar o serviço kubelet
+      systemd:
+        name: kubelet
+        enabled: yes
+        state: started
+          
     - name: Inicializa o cluster Kubernetes atraves da ferramenta kubeadm
       shell: kubeadm init --apiserver-advertise-address="172.16.1.100" --apiserver-cert-extra-sans="172.16.1.100" --node-name kube-master --pod-network-cidr=192.168.0.0/16 --kubernetes-version=1.21.1 --ignore-preflight-errors=all > /opt/init_cluster
       args:
@@ -237,7 +288,7 @@
 
     - name: Copia o comando do join no arquivo local
       local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"
-
+          
   handlers:
     - name: docker status
       service: name=docker state=started
