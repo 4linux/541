@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: memcached1
+  name: memcached1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memcached1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: memcached1
+    spec:
+      containers:
+      - image: memcached:latest
+        imagePullPolicy: IfNotPresent
+        name: memcached1
+        ports:
+        - containerPort: 11211
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: memcached2
+  name: memcached2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memcached2
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: memcached2
+    spec:
+      containers:
+      - image: memcached:latest
+        imagePullPolicy: IfNotPresent
+        name: memcached2
+        ports:
+        - containerPort: 11211

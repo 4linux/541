@@ -1,0 +1,27 @@
+---
+- hosts: all
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+    - name: Garantindo /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ item }}"
+      with_items:
+        - 172.16.1.150 kube-proxy
+        - 172.16.1.151 kube-master1
+        - 172.16.1.152 kube-master2
+        - 172.16.1.153 kube-master3
+        - 172.16.1.154 kube-worker1
+
+    - name: Adiciona usuario suporte
+      user:
+        name: suporte
+        shell: /bin/bash
+        password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
+
+    - name: Clona repositório com os arquivos do curso para a HOME do usuario suporte
+      git:
+        repo: 'https://github.com/4linux/541-kubernetes.git'
+        dest: /home/suporte/541

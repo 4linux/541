@@ -1,0 +1,215 @@
+---
+- hosts: all
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+    - name: Garantindo /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ item }}"
+      with_items:
+        - 172.16.1.100 kube-master
+        - 172.16.1.101 kube-node1
+        - 172.16.1.102 kube-node2
+        - 172.16.1.103 kube-infra
+        - 172.16.1.202 docker-registry
+
+    - name: Remove swap do arquivo /etc/fstab
+      mount:
+        name: "{{ item }}"
+        fstype: swap
+        state: absent
+      with_items:
+        - swap
+        - none
+
+    - name: Desativa o swap
+      command: swapoff -a
+      when: ansible_swaptotal_mb > 0
+
+    - name: Cria o arquivo containerd.conf
+      file:
+        path: /etc/modules-load.d/containerd.conf
+        state: touch
+
+    - name: Configurando modulos
+      lineinfile:
+        path: /etc/modules-load.d/containerd.conf
+        line: "{{ item }}"
+      with_items:
+        - overlay
+        - br_netfilter
+
+    - name: Carregando modulos
+      shell: modprobe overlay && modprobe br_netfilter
+
+    - name: Cria o arquivo dkubernetes.conf
+      file:
+        path: /etc/sysctl.d/kubernetes.conf
+        state: touch
+
+    - name: Configurando sysctl
+      lineinfile:
+        path: /etc/sysctl.d/kubernetes.conf
+        line: "{{ item }}"
+      with_items:
+        - net.bridge.bridge-nf-call-ip6tables = 1
+        - net.bridge.bridge-nf-call-iptables = 1
+        - net.ipv4.ip_forward = 1
+
+    - name: Aplicando sysctl
+      shell: sysctl --system
+
+    - name: Adiciona usuario suporte
+      user:
+        name: suporte
+        shell: /bin/bash
+        password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
+
+    - name: Instala pacotes que permitem que o apt seja usado sobre HTTPS
+      apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: yes
+      vars:
+        packages:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg2
+        - software-properties-common
+        - mysql-client
+        - nfs-common
+        - snapd
+        - git
+        - vim
+
+    - name: Clona repositório com os arquivos do curso para a HOME do usuario suporte
+      git:
+        repo: 'https://github.com/4linux/541-kubernetes.git'
+        dest: /home/suporte/541
+
+    - name: Adiciona uma chave de assinatura apt para o Docker
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Adiciona repositorio apt para versao estavel
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Instala o Containerd
+      apt:
+        name: containerd.io
+        state: present
+        update_cache: yes
+
+    - name: Criar conf default do Containerd
+      shell: containerd config default | sudo tee /etc/containerd/config.toml >/dev/null 2>&1
+
+    - name: Ativa o Systemd no arquivo config.toml
+      replace:
+        path: /etc/containerd/config.toml
+        regexp: 'SystemdCgroup = false'
+        replace: 'SystemdCgroup = true'
+
+    - name: Ativa o uso de plugins no arquivo config.toml
+      replace:
+        path: /etc/containerd/config.toml
+        regexp: '^disabled_plugins ='
+        replace: '#disabled_plugins ='
+
+    - name: Reinicia o containerd
+      service:
+        name: containerd
+        state: restarted
+
+    - name: Criar diretório /etc/apt/keyrings para apt do Kubernetes
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+
+    - name: Adicione o repositório apt do Kubernetes ao sources.list
+      lineinfile:
+        path: /etc/apt/sources.list.d/kubernetes.list
+        line: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /"
+        create: yes
+        state: present
+
+    - name: Importar chave GPG para o sistema
+      shell: "curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg"
+      args:
+        warn: false
+
+    - name: Instala os pacotes do Kubernetes
+      apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: yes
+      vars:
+        packages:
+        - kubelet
+        - kubeadm
+        - kubectl
+
+    - name: Inicializa o cluster Kubernetes atraves da ferramenta kubeadm
+      shell: kubeadm init --apiserver-advertise-address=172.16.1.100 --pod-network-cidr=192.168.0.0/16 --ignore-preflight-errors=all > /opt/init_cluster
+      args:
+        creates: /opt/init_cluster
+        
+    - name: Cria o diretório .kube para o usuário vagrant
+      file:
+        path: /home/vagrant/.kube
+        state: directory
+        mode: '0755'
+
+    - name: Configura o kubeconfig para o usuario vagrant
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/vagrant/.kube/config
+        remote_src: yes
+
+    - name: Definir permissao de acesso ao arquivo config
+      file:
+        path: /home/vagrant/.kube/config
+        owner: vagrant
+        group: vagrant
+        mode: '0644'
+
+    - name: Cria o diretório .kube para o usuário suporte
+      file:
+        path: /home/suporte/.kube
+        state: directory
+        owner: suporte
+        group: suporte
+        mode: '0755'
+
+    - name: Configura o kubeconfig para o usuario suporte
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/suporte/.kube/config
+        remote_src: yes
+
+    - name: Definir permissao de acesso ao arquivo config
+      file:
+        path: /home/suporte/.kube/config
+        owner: suporte
+        group: suporte
+        mode: '0644'
+
+    - name: Instala a rede calico no cluster
+      become: false
+      command: kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/calico.yaml
+
+    - name: Permite que o master execute Pods como Worker
+      become: false
+      command: kubectl taint nodes kube-master node-role.kubernetes.io/control-plane-
+
+    - name: Gera o comando para o join de novos nodes
+      command: kubeadm token create --print-join-command
+      register: join_command
+
+    - name: Copia o comando do join no arquivo local
+      local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"

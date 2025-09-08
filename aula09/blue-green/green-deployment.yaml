@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: green
+  name: frontend-green
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: green
+  template:
+    metadata:
+      labels:
+        app: green
+    spec:
+      containers:
+      - image: docker-registry:5000/4linux-php:v2
+        imagePullPolicy: IfNotPresent
+        name: 4linux-php
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-configmaps
+              key: DB_HOST
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-configmaps
+              key: DB_PORT
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-configmaps
+              key: DB_USER
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-configmaps
+              key: DB_NAME
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: frontend-secrets
+              key: DB_PASS
+      imagePullSecrets:
+      - name: regcred

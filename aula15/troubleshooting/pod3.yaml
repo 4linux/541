@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod3
+spec:
+  containers:
+  - image: busybox
+    imagePullPolicy: IfNotPresent
+    name: pod3
+    command:
+    - dd
+    - if=/dev/zero
+    - of=/dev/null
+    resources:
+      requests:
+        memory: 9999Mi
+        cpu: 800m

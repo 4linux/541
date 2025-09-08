@@ -1,0 +1,4 @@
+---
+resources:
+- frontend-latest.yaml
+- frontend-service.yaml

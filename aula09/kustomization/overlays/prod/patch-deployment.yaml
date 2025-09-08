@@ -1,0 +1,11 @@
+---
+apiVersion: apps/v1  
+kind: Deployment  
+metadata:  
+  name: frontend
+spec:  
+  template:  
+    spec:  
+      containers:  
+      - name: 4linux-php
+        image: docker-registry:5000/4linux-php:latest
